@@ -1,16 +1,22 @@
-var url = "http://netplanning.telelangue.com/portal/login.do";
 
-var request = require('request');
+var Engine = require('./app/engine');
 
-var done = function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body) // Print the google web page.
-  }
-};
+console.log(Engine);
 
-var parameters = {
-	username: "R3775",
-	password: "NLCGL"
-}
+Engine.login({
+	username:"R3775",
+	password:"NLCGL"
+}, function(err, result) {
+	if(err) {
+		console.log(err);		
+	} else {
+		console.log(result);
+	}
+});
 
-request.post(url, done).form(parameters);
+
+
+
+
+
+

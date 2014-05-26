@@ -1,0 +1,32 @@
+{
+	"name": "NetPlanning",
+	"description": "NetPlanning server and API to support the NetPlanning client application.",
+	"version": "0.1.0",
+	"config" : { 
+		"port" : "50000",
+		"dbUrl": "mongodb://localhost:27017/netplanning",
+		"logLevel": "short",
+		"secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
+	},	
+	"main": "app.js",
+	"scripts": {
+		"start": "nodejs app.js"
+	},
+	"private": "true",
+	"dependencies": {
+		"express": "~4.1.x",
+		"body-parser": "~1.0.x",
+		"morgan": "latest",
+		"method-override": "~1.0.x",
+		"mongodb": "latest",
+		"mongoose": "latest",
+		"jsonwebtoken": "latest",
+		"nino-auth": "latest",
+		"bcrypt": "latest",
+		"apn": "~1.5.x",
+		"winston": "~0.7.x",
+		"async": "0.9.x",
+		"request": "2.36.x",
+		"conflate": "1.1.x"		
+	}
+}
