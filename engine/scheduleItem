@@ -1,0 +1,35 @@
+/*!
+ * NetPlanning Engine
+ * Antonino Parisi <tabman83@gmail.com>
+ *
+ */
+/*jshint onevar: false, indent:4 */
+/*global setImmediate: false, setTimeout: false, console: false */
+(function () {
+
+    var ScheduleItem = function(regexMatch) {
+    	this.begin 	= regexMatch[1];
+    	this.end 	= regexMatch[2];
+    	this.kind 	= regexMatch[3];
+    	this.userId = regexMatch[4];
+    	this.name	= regexMatch[5];
+    }
+
+    // Node.js
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = ScheduleItem;
+    }
+    // AMD / RequireJS
+    else if (typeof define !== 'undefined' && define.amd) {
+        define([], function () {
+            return ScheduleItem;
+        });
+    }
+    // included directly via <script> tag
+    else {
+        this.ScheduleItem = ScheduleItem;
+    }
+
+}());
+
+
