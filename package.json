@@ -4,7 +4,7 @@
 	"version": "0.1.0",
 	"config" : { 
 		"port" : "50000",
-		"dbUrl": "mongodb://localhost:27017/netplanning",
+		"dbUrl": "mongodb://localhost/NetPlanning",
 		"logLevel": "short",
 		"secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
 	},	
@@ -19,14 +19,16 @@
 		"morgan": "latest",
 		"method-override": "~1.0.x",
 		"mongodb": "latest",
-		"mongoose": "latest",
+		"mongoose": "3.8.3",
 		"jsonwebtoken": "latest",
 		"nino-auth": "latest",
 		"bcrypt": "latest",
 		"apn": "~1.5.x",
-		"winston": "~0.7.x",
+		"winston": "latest",
 		"async": "0.9.x",
 		"request": "2.36.x",
-		"conflate": "1.1.x"		
+		"conflate": "1.1.x",
+		"underscore": "latest",
+		"moment": "latest"	
 	}
 }

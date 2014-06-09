@@ -8,11 +8,12 @@
 (function () {
 
     var ScheduleItem = function(regexMatch) {
-    	this.begin 	= regexMatch[1];
-    	this.end 	= regexMatch[2];
-    	this.kind 	= regexMatch[3];
-    	this.userId = regexMatch[4];
-    	this.name	= regexMatch[5];
+    	this.begin 		= new Date(parseInt(regexMatch[1],10));
+    	this.end 		= new Date(parseInt(regexMatch[2],10));
+    	this.kind 		= regexMatch[3];
+    	this.id 		= regexMatch[4] || null;
+    	this.name		= regexMatch[5] || null;
+    	this.comment 	= regexMatch[6] || null; 
     }
 
     // Node.js

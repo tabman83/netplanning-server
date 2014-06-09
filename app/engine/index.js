@@ -57,23 +57,23 @@
 	
 	Engine.loadSchedule = function(sessionId, callback) {
 	
-		if( sessionId && sessionId.length > 0)
-		{
+		if( sessionId && sessionId.length > 0) {
+		
 			var cacheBust = (new Date()).getTime();
 			var options1 = { sessionId: sessionId, qs: { init: true, cacheBust: cacheBust+'1' } };
 			var options2 = { sessionId: sessionId, qs: { next: true, cacheBust: cacheBust+'2' } };
 			var options3 = { sessionId: sessionId, qs: { next: true, cacheBust: cacheBust+'3' } };
 			
-			var schedules = [];
+			async.mapSeries([options1,options2,options3], Engine.loadSingleSchedule, function(err, results) {
 			
-			async.mapSeries([options1,options2,options3], Engine.loadSingleSchedule, function(err, results){
 				if(err) {
 					callback(err);
 				} else {
-					schedules = [].concat(results[0],results[1],results[2]);
+					var schedules = [].concat(results[0],results[1],results[2]);
 					callback(null, schedules);
 				}
 			});
+			
 		}
 		else
 		{
