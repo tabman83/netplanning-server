@@ -12,9 +12,9 @@
 	var util = require('util');
 	var async = require('async');
 	var request = require('request');
+	var cheerio = require('cheerio');
 	
 	var Config = require('./config');
-	var ScheduleItem = require('./scheduleItem');
 	
 	var InvalidLoginError = require('../errors/InvalidLoginError');
 	var LoginError = require('../errors/LoginError');
@@ -29,12 +29,58 @@
 	  				var err = new SessionError("Your session timed out.");
 	  				callback(err);
 	  			} else {
-	  				var re = Config.regExes.schedule;
-	  				var scheduleItems = [], match = null;
-	  				while((match = re.exec(body)) !== null ) {
-	  					var scheduleItem = new ScheduleItem(match);
-	  					scheduleItems.push(scheduleItem);
-	  				}
+	  				var scheduleItems = [];
+	  				$ = cheerio.load(body);
+					var tds = $('tr>td[style="width:80px"]');
+		
+					tds.each( function(i, htmlEl) {
+						var htmlEl = $(htmlEl);
+						var className = htmlEl.attr('class');
+						
+						if( className === 'indispo' ) {
+							return true;
+						}
+						
+						var begin = htmlEl.attr('debut');
+						var end = htmlEl.attr('fin');
+						var content = htmlEl.html();
+
+						var aMatch = null;
+						
+						aMatch = content.match(Config.regExes.scheduleUserId);
+						var userId = (aMatch && aMatch.length) ? aMatch[1] : null;
+						
+						aMatch = content.match(Config.regExes.scheduleName);
+						var name = (aMatch && aMatch.length) ? aMatch[1] : null;
+
+						aMatch = content.match(Config.regExes.scheduleReason);
+						var reason = (aMatch && aMatch.length) ? aMatch[1] : null;
+						/*
+						switch( className ) {
+							case 'dispo' : // available 
+							case 'indispo' : // not available at all
+							case 'indispoPonctuelle': // made unavailable by you
+							case 'reserve' : // One-Off reservation
+							case 'recurrente' : // Automatic Rebooking
+							case 'training' :
+							case 'dispo_stag2' : // Slots made available by you
+							case 's_indispo2' : // no more bookable beacause time passed
+							case 'training' : // training lesson
+							case 'reserveRemplacement' // substitution
+							case 'instantHelp' : // instant help
+							case 'special1' : // tutorial lesson
+							case 'special2' : // special lesson
+						}
+						*/
+	  					scheduleItems.push({
+	  						begin: new Date(parseInt(begin,10)),
+	  						end: new Date(parseInt(end,10)),
+	  						reason: reason,
+	  						kind: className,
+	  						userId: userId,
+	  						name: name
+	  					});	  					
+					});  					
 	  				callback(null, scheduleItems);
 	  			}
 			} else {

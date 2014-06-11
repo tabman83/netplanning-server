@@ -20,13 +20,12 @@ Array.prototype.diff = function(a) {
     	return a.filter( function(aEl) {
     	
     		return b.filter( function(bEl) {
-			
     		
     			var condition = true;
     			fields.forEach( function( field ) {
-    				condition &= (aEl[field] === bEl[field]);
+					condition &= (aEl[field] === bEl[field]);
 				} );
-				return condition;    		
+				return !condition;    		
     		
     		}).length === 0;
     	

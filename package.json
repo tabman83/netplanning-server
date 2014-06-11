@@ -29,6 +29,7 @@
 		"request": "2.36.x",
 		"conflate": "1.1.x",
 		"underscore": "latest",
-		"moment": "latest"	
+		"moment": "latest",
+		"cheerio": "latest"	
 	}
 }

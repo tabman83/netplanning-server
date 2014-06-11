@@ -72,7 +72,7 @@ var start = function() {
 							next(null, user);
 						}
 					});
-					console.log('User '+user.username+': logged in ('+user.sessionId+')');
+					console.log('User '+user.username+': logged in with session '+user.sessionId);
 				}
 			});
 		}
@@ -84,55 +84,76 @@ var start = function() {
 		});
 	}
 	
-	var loadSchedule = function(user, next) {
+	var loadNetSchedule = function(user, next) {
 		console.log('User '+user.username+': loading schedule');
 		Engine.loadSchedule(user.sessionId, function(err, result) {
 			if(err) {
 				next(err);
 			} else {
-				next(null, user, result);
+				console.log('User '+user.username+': found '+result.length+' items');
+				var netScheduleItems = result.map( function( el ) {
+					el.user = user._id;
+					el.changedOrUnchanged = true;
+					el.addedOrCancelled = true;
+					el.notified = false;
+					return el;
+				});
+				next(null, user, netScheduleItems);
 			}
 		});		
 	}
-
-
-/* ChangedOrUnchanged = true/false
-   AddedOrCancelled = true/false
-   notified = true/false
-*/
-
-	var updateSchedule = function(user, netScheduleItems, next) {
-		ScheduleItem.find({user: user._id}, function(err, dbScheduleItems) {
+	
+	var loadDbSchedule = function(user, netScheduleItems, next) {
+		ScheduleItem.find({
+			user: user._id,
+			begin: { $gt: Date.now() }
+		}, function(err, dbScheduleItems) {
 			if(err) {
 				next(err);
 			} else {
-				
-				var res = -1;
-				var fields = ['begin', 'end'];
-				
-				res = helpers.difference( netScheduleItems, dbScheduleItems, fields );
-				console.log(res.length);
-
-				res = helpers.difference( dbScheduleItems, netScheduleItems, fields );
-				console.log(res.length);
-				
-				
-				next(null, user);
+				next(null, user, netScheduleItems, dbScheduleItems);
 			}
+		});	
+	}
+	
+
+
+/* changedOrUnchanged = true/false
+   addedOrCancelled = true/false
+   notified = true/false
+*/
+
+	var updateSchedule = function(user, netScheduleItems, dbScheduleItems, next) {
+		// net - db
+		var netMinusDb = helpers.difference( netScheduleItems, dbScheduleItems, ['kind'] );
+		console.log("netMinusDb: "+netMinusDb.length);
+		
+		// db - net
+		var dbMinusNet = helpers.difference( dbScheduleItems, netScheduleItems, ['kind'] );
+		console.log("dbMinusNet: "+dbMinusNet.length);
+				
+		ScheduleItem.create(netMinusDb, function (err) {
+		
+		  	if (err) {
+		  		next(err, user);
+		  	} else {
+		  		next(null, user);
+		  	}
+		  	
 		});
 	}
 
 	async.waterfall([
 		retrieveUser,
 		loginIfNeeded,
-		loadSchedule,
+		loadNetSchedule,
+		loadDbSchedule,
 		updateSchedule
-	], function(err, result) {
+	], function(err, user) {
 		if(err) {
-			console.log("err at the end of the waterfall");
-			console.log(err.message);
+			console.log('User '+user.username+': error occurred ('+String(err)+')');
 		} else {
-			console.log("NO err at the end of the waterfall");
+			console.log('User '+user.username+': Done.');
 		}
 	
 		mongoose.disconnect();
