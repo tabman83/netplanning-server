@@ -4,6 +4,7 @@
 	"version": "0.1.0",
 	"config" : { 
 		"port" : "50000",
+		"hostName": "netplanning.ninonet.it",
 		"dbUrl": "mongodb://localhost/NetPlanning",
 		"logLevel": "short",
 		"secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
@@ -27,8 +28,6 @@
 		"winston": "latest",
 		"async": "0.9.x",
 		"request": "2.36.x",
-		"conflate": "1.1.x",
-		"underscore": "latest",
 		"moment": "latest",
 		"cheerio": "latest"	
 	}

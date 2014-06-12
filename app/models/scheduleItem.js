@@ -1,3 +1,10 @@
+/*!
+ * NetPlanning Engine
+ * Antonino Parisi <tabman83@gmail.com>
+ * Created:		May 2014
+ * Description:	Mongoose schema of a schedule item
+ */
+ 
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
