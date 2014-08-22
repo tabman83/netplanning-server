@@ -9,24 +9,36 @@
  
 module.exports = function(user, netScheduleItems, dbScheduleItems, next) {
 
-	var helpers = require('../helpers');
+	var moment = require('moment');
+	var helpers = require('../helpers');	
 	var ScheduleItem = require('../models/scheduleItem');	
 	
 	// net - db
-	var netMinusDb = helpers.difference( netScheduleItems, dbScheduleItems, ['kind'] );
+	var netMinusDb = helpers.difference( netScheduleItems, dbScheduleItems, ['begin','end','kind'] );
 	console.log("netMinusDb: "+netMinusDb.length);
 	
 	// db - net
-	var dbMinusNet = helpers.difference( dbScheduleItems, netScheduleItems, ['kind'] );
+	var dbMinusNet = helpers.difference( dbScheduleItems, netScheduleItems, ['begin','end','kind'] );
 	console.log("dbMinusNet: "+dbMinusNet.length);
-			
-	ScheduleItem.create(netMinusDb, function (err) {
 	
-	  	if (err) {
-	  		next(err, user);
-	  	} else {
-	  		next(null, user);
-	  	}
-	  	
+	// asynchronously delete old items
+	var today = (new Date()).setHours(0,0,0,0);
+	
+	ScheduleItem.remove({
+		user : user._id, 
+		end  : { 
+			$lt: today 
+		}
+	}, function() {
+			
+		ScheduleItem.create(netMinusDb, function (err) {
+	
+		  	if (err) {
+		  		next(err, user);
+		  	} else {
+		  		next(null, user);
+		  	}
+		  	
+		});
 	});
 }

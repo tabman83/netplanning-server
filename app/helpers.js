@@ -7,33 +7,19 @@
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
 
-    var helpers = {
-    };
-    
-/*    
-Array.prototype.diff = function(a) {
-    return this.filter(function(i) {return a.indexOf(i) < 0;});
-};
-*/    
-    helpers.difference = function(a, b, fields) {
-    
-    	return a.filter( function(aEl) {
-    	
-    		return b.filter( function(bEl) {
-    		
+    var helpers = {};    
+   
+    helpers.difference = function(a, b, fields) {    
+    	return a.filter( function(aEl) {    	
+    		return b.filter( function(bEl) {    		
     			var condition = true;
     			fields.forEach( function( field ) {
 					condition &= (aEl[field] === bEl[field]);
 				} );
 				return !condition;    		
-    		
-    		}).length === 0;
-    	
-    	});
-    
-    }
-    
-    
+    		}).length === 0;    	
+    	});    
+    }      
 
     // Node.js
     if (typeof module !== 'undefined' && module.exports) {

@@ -8,6 +8,7 @@ var UserSchema   = new Schema({
 	lastLogin:	{ type: Date, default: 0 },
 	lastCheck:	{ type: Date },
 	sessionId:	{ type: String },
+	language:	{ type: String, default: 'EN' },
 	apple:		{ type: String },
 	google:		{ type: String },
 	winPhone:	{ type: String },

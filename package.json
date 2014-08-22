@@ -1,34 +1,34 @@
 {
-	"name": "NetPlanning",
-	"description": "NetPlanning server and API to support the NetPlanning client application.",
-	"version": "0.1.0",
-	"config" : { 
-		"port" : "50000",
-		"hostName": "netplanning.ninonet.it",
-		"dbUrl": "mongodb://localhost/NetPlanning",
-		"logLevel": "short",
-		"secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
-	},	
-	"main": "app.js",
-	"scripts": {
-		"start": "nodejs app.js"
-	},
-	"private": "true",
-	"dependencies": {
-		"express": "~4.1.x",
-		"body-parser": "~1.0.x",
-		"morgan": "latest",
-		"method-override": "~1.0.x",
-		"mongodb": "latest",
-		"mongoose": "3.8.3",
-		"jsonwebtoken": "latest",
-		"nino-auth": "latest",
-		"bcrypt": "latest",
-		"apn": "~1.5.x",
-		"winston": "latest",
-		"async": "0.9.x",
-		"request": "2.36.x",
-		"moment": "latest",
-		"cheerio": "latest"	
-	}
+  "name": "NetPlanning",
+  "description": "NetPlanning server and API to support the NetPlanning client application.",
+  "version": "0.1.0",
+  "config": {
+    "port": "50000",
+    "hostName": "netplanning.ninonet.it",
+    "dbUrl": "mongodb://localhost/NetPlanning",
+    "logLevel": "short",
+    "secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "nodejs app.js"
+  },
+  "private": "true",
+  "dependencies": {
+    "express": "~4.1.x",
+    "body-parser": "~1.0.x",
+    "morgan": "latest",
+    "method-override": "~1.0.x",
+    "mongodb": "latest",
+    "mongoose": "3.8.3",
+    "jsonwebtoken": "latest",
+    "nino-auth": "latest",
+    "bcrypt": "latest",
+    "apn": "~1.5.x",
+    "winston": "latest",
+    "async": "0.9.x",
+    "request": "2.36.x",
+    "moment": "~2.8.1",
+    "cheerio": "latest"
+  }
 }
