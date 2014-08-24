@@ -1,12 +1,12 @@
 var winston = require('winston');
 var logger = new (winston.Logger)({
 	transports: [
-	    /*new (winston.transports.File)({ 
-        	filename: '/var/log/app.log', 
-        	colorize: true 
+	    /*new (winston.transports.File)({
+        	filename: '/var/log/app.log',
+        	colorize: true
     	}),*/
     	new (winston.transports.Console)({ colorize: true, level:'debug' })
-]});	
+]});
 logger.extend(console);
 
 var log = console.log;
@@ -27,15 +27,43 @@ var winstonStream = {
 
 console.log("Application "+process.env.npm_package_name+" "+process.env.npm_package_version+" start up");
 
-var mongoose   = require('mongoose');
-var helpers = require('./app/helpers');
-var Engine = require('./app/engine');
-var User = require('./app/models/user');
+var mongoose   	= require('mongoose');
+var helpers 	= require('./app/helpers');
+var Engine 		= require('./app/engine');
+var User 		= require('./app/models/user');
 var express		= require('express');
-var morgan  		= require('morgan');
+var morgan  	= require('morgan');
+var apn 		= require('apn');
 var app			= express();
 
-var start = function() {
+
+var apnConnection = null;
+
+// initializes app and create resources
+var init = function(callback) {
+	var options = {
+		cert: 'certs/prod/cert.pem',
+		key: 'certs/prod/key.pem',
+		production: true
+	};
+	apnConnection = new apn.Connection(options);
+
+	mongoose.connection.on("open", function(ref) {
+		console.log("Database connection successfully established");
+		callback();
+	});
+	mongoose.connection.on("error", function(err) {
+		console.error("Database connection failed", err);
+	});
+	mongoose.connect(process.env.npm_package_config_dbUrl);
+}
+
+var dispose = function(callback) {
+	apnConnection.shutdown();
+	mongoose.connection.close(callback);
+}
+
+var appStart = function() {
 /*
 	app.use(morgan({
 		format: process.env.npm_package_config_logLevel,
@@ -66,29 +94,44 @@ var start = function() {
 		username:"R3775",
 		password:"NLCGL"
 	};
-	
-	User.findOne(credentials, function(err,user) {
 
-		Engine.loadAndUpdateSchedule( user, function(err, user) {
+	/*
+	User.create({
+		username:"R3775",
+		password:"NLCGL"
+	},function() {
+		mongoose.disconnect();
+	});
+	return;
+	*/
+
+	User.findOne(credentials, function(err, user) {
+
+		var data = {
+			user: user,
+			apnConnection: apnConnection
+		};
+
+		Engine.loadAndUpdateSchedule( data, function(err, data) {
 			if(err) {
 				console.log('User '+user.username+': error occurred ('+String(err)+')');
 			} else {
 				console.log('User '+user.username+': Done.');
 			}
-	
-			mongoose.disconnect();
+
+			dispose(function () {
+				console.log('Database connection disconnected');
+			});
 		});
 	});
 
 }
 
-mongoose.connection.on("open", function(ref) {
-	console.log("Database connection successfully established");
-	start();
+process.on('SIGINT', function() {
+	dispose(function () {
+    	console.log('Database connection disconnected through app termination');
+    	process.exit(0);
+	});
 });
 
-mongoose.connection.on("error", function(err) {
-	console.error("Database connection failed",err);
-});
-
-mongoose.connect(process.env.npm_package_config_dbUrl);
+init( appStart );
