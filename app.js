@@ -27,14 +27,17 @@ var winstonStream = {
 
 console.log("Application "+process.env.npm_package_name+" "+process.env.npm_package_version+" start up");
 
-var mongoose   	= require('mongoose');
-var helpers 	= require('./app/helpers');
-var Engine 		= require('./app/engine');
-var User 		= require('./app/models/user');
-var express		= require('express');
-var morgan  	= require('morgan');
-var apn 		= require('apn');
-var app			= express();
+var mongoose   		= require('mongoose');
+var helpers 		= require('./app/helpers');
+var Engine 			= require('./app/engine');
+var Routes			= require('./app/routes');
+var User 			= require('./app/models/user');
+var express			= require('express');
+var bodyParser		= require('body-parser');
+var methodOverride	= require('method-override');
+var morgan  		= require('morgan');
+var apn 			= require('apn');
+var app				= express();
 
 
 var apnConnection = null;
@@ -64,7 +67,7 @@ var dispose = function(callback) {
 }
 
 var appStart = function() {
-/*
+
 	app.use(morgan({
 		format: process.env.npm_package_config_logLevel,
 		stream: winstonStream
@@ -73,9 +76,9 @@ var appStart = function() {
 	app.use(bodyParser());
 	app.use(methodOverride());
 
-	app.use(ninoAuth({ secret: process.env.npm_package_config_secret, skip: ['/auth']}));
+	//app.use(ninoAuth({ secret: process.env.npm_package_config_secret, skip: ['/auth']}));
 	var router = express.Router();
-	routes(router,jwt,winston);
+	Routes(router); // routes(router,jwt)
 	app.use('/v1', router );
 
 	app.use(function(err, req, res, next){
@@ -87,7 +90,7 @@ var appStart = function() {
 
 	var server = app.listen(process.env.npm_package_config_port, process.env.npm_package_config_hostName, function() {
 		console.log('Listening on %s %s:%d', process.env.npm_package_config_hostName, server.address().address, server.address().port);
-	});*/
+	});
 
 
 	var credentials = {

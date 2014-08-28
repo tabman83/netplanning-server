@@ -15,20 +15,20 @@
   },
   "private": "true",
   "dependencies": {
+    "apn": "~1.5.x",
+    "async": "0.9.x",
+    "bcrypt": "latest",
+    "body-parser": "1.0.x",
+    "cheerio": "latest",
     "express": "~4.1.x",
-    "body-parser": "~1.0.x",
-    "morgan": "latest",
+    "jsonwebtoken": "latest",
     "method-override": "~1.0.x",
+    "moment": "~2.8.1",
     "mongodb": "latest",
     "mongoose": "3.8.3",
-    "jsonwebtoken": "latest",
+    "morgan": "latest",
     "nino-auth": "latest",
-    "bcrypt": "latest",
-    "apn": "~1.5.x",
-    "winston": "latest",
-    "async": "0.9.x",
     "request": "2.36.x",
-    "moment": "~2.8.1",
-    "cheerio": "latest"
+    "winston": "latest"
   }
 }
