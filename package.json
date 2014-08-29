@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "config": {
     "port": "50000",
-    "hostName": "netplanning.ninonet.it",
+    "hostName": "localhost",
     "dbUrl": "mongodb://localhost/NetPlanning",
     "logLevel": "short",
     "secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
@@ -28,7 +28,8 @@
     "mongoose": "3.8.3",
     "morgan": "latest",
     "nino-auth": "latest",
-    "request": "2.36.x",
+    "passport": "^0.2.0",
+    "request": "2.x",
     "winston": "latest"
   }
 }

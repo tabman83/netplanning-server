@@ -7,6 +7,8 @@
  * Description:	Logs the user in if the current user sessionId is invalid or timed out
  */
 
+var logger = require("../logger");
+
 module.exports = function(data, next) {
 
 	var request = require('request');
@@ -36,7 +38,7 @@ module.exports = function(data, next) {
 						next(null, data);
 					}
 				});
-				console.log('User '+user.username+': logged in with session '+user.sessionId);
+				logger.debug('User %s: logged with session %s.', user.username, user.sessionId);
 
   			} else {
   				var err = new LoginError("An error occurred during login.");

@@ -5,6 +5,8 @@
  * Description:	Notify the user for any change
  */
 
+var logger = require("../logger");
+
 module.exports = function(data, next) {
 
     var async = require('async');
@@ -47,7 +49,7 @@ module.exports = function(data, next) {
                     break;
             }
 
-            console.log('Sending notification message: '+notificationMessage);
+            logger.debug('Sending notification message: '+notificationMessage);
             var appleDevice = new apn.Device(user.apple); // ale: d3dc68fe85aa1a821f2be96ba07aaf84e4bce97d1981a573c5f57c6d9fa642fc
             var note = new apn.Notification();
             var expirationHours = 1;  // Expires 1 hour from now.

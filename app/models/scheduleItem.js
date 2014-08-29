@@ -4,7 +4,7 @@
  * Created:		May 2014
  * Description:	Mongoose schema of a schedule item
  */
- 
+
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
@@ -18,7 +18,7 @@ var ScheduleItemSchema   = new Schema({
 	reason:		{ type: String },
 	changedOrUnchanged:	{ type: Boolean, required: true },
 	addedOrCancelled:	{ type: Boolean, required: true },
-	notified:			{ type: Boolean, required: true },		
+	notified:			{ type: Boolean, required: true },
 });
 
 ScheduleItemSchema.index({ user: 1, begin: 1, end: 1}, { unique: true });

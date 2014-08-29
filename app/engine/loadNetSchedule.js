@@ -1,14 +1,18 @@
 /*!
  * NetPlanning Engine
  * Antonino Parisi <tabman83@gmail.com>
+ *
+ * File name:   loadNetSchedule.js
  * Created:		6/12/2014 01.55
  * Description:	Loads the schedule from the internet
  */
 
+var logger = require("../logger");
+
 module.exports = function(data, next) {
 
     var user = data.user;
-	console.log('User '+user.username+': loading schedule');
+	logger.debug('User %s: loading schedule.', user.username);
 
 	var async = require('async');
 
@@ -37,7 +41,7 @@ module.exports = function(data, next) {
 				return el;
 			});
 
-			console.log('User '+user.username+': found '+netScheduleItems.length+' items');
+			logger.debug('User %s: found %d items.', user.username, netScheduleItems.length);
 
 			next(null, data, netScheduleItems);
 		}

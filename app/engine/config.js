@@ -15,7 +15,7 @@
     	scheduleName: /<strong>(.+?)<\/strong>/,
     	scheduleReason: /<a\shref="#"\sonmouseover="doDisplay\(&#x27;horaire\d{3}&#x27;\)"\sonmouseout="kill\(\)">(.+)<\/a>/
 	}
-	
+
 	// Node.js
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = Config;
@@ -31,4 +31,4 @@
         this.Config = Config;
     }
 
-}());	
+}());

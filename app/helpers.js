@@ -7,19 +7,19 @@
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
 
-    var helpers = {};    
-   
-    helpers.difference = function(a, b, fields) {    
-    	return a.filter( function(aEl) {    	
-    		return b.filter( function(bEl) {    		
+    var helpers = {};
+
+    helpers.difference = function(a, b, fields) {
+    	return a.filter( function(aEl) {
+    		return b.filter( function(bEl) {
     			var condition = true;
     			fields.forEach( function( field ) {
 					condition &= (aEl[field] === bEl[field]);
 				} );
-				return !condition;    		
-    		}).length === 0;    	
-    	});    
-    }      
+				return !condition;
+    		}).length === 0;
+    	});
+    }
 
     // Node.js
     if (typeof module !== 'undefined' && module.exports) {

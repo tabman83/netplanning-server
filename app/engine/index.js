@@ -1,6 +1,8 @@
 /*!
  * NetPlanning Engine
  * Antonino Parisi <tabman83@gmail.com>
+ *
+ * File name:	loadDbSchedule.js
  * Created:		May 2014
  * Description:	Core engine
  */

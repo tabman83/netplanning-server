@@ -7,6 +7,8 @@
 * Description:	Updates the schedule to the database
 */
 
+var logger = require("../logger");
+
 module.exports = function(data, netScheduleItems, dbScheduleItems, next) {
 
     var moment = require('moment');
@@ -16,12 +18,12 @@ module.exports = function(data, netScheduleItems, dbScheduleItems, next) {
     var user = data.user;
 
     // net - db
-    var netMinusDb = helpers.difference( netScheduleItems, dbScheduleItems, ['begin','end','kind'] );
-    console.log("netMinusDb: "+netMinusDb.length);
+    var netMinusDb = helpers.difference( netScheduleItems, dbScheduleItems, ['begin', 'end', 'kind'] );
+    logger.debug('User %s: Net-Db: %d', user.username, netMinusDb.length);
 
     // db - net
-    var dbMinusNet = helpers.difference( dbScheduleItems, netScheduleItems, ['begin','end','kind'] );
-    console.log("dbMinusNet: "+dbMinusNet.length);
+    var dbMinusNet = helpers.difference( dbScheduleItems, netScheduleItems, ['begin', 'end', 'kind'] );
+    logger.debug('User %s: Db-Net: %d', user.username, dbMinusNet.length);
 
     // asynchronously delete old items
     var today = (new Date()).setHours(0,0,0,0);
