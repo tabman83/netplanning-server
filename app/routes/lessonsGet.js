@@ -7,7 +7,19 @@
  * Description:	GET /Lessons API
  */
 
-module.exports = function (req, res) {
+var logger  = require("../logger");
+var ScheduleItem   = require('../models/scheduleItem');
 
-     res.send('GET /Lessons API echo');
+module.exports = function (req, res, next) {
+
+    var fields = ['begin','end','kind','name','changedOrUnchanged','addedOrCancelled','notified'].join(' ');
+
+    ScheduleItem.find({user: req.user.userId}, fields, function( err, lessons ) {
+        if (err) {
+            next(err);
+            return;
+        }
+        res.json(200, { lessons: lessons });
+        return;
+    });
 }

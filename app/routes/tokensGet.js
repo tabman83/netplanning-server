@@ -9,5 +9,5 @@
 
 module.exports = function (req, res) {
 
-     res.send('GET /Tokens API echo');
+    res.send('GET /Tokens API echo');
 }
