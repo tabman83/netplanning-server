@@ -13,7 +13,7 @@ var Schema       = mongoose.Schema;
 var TokenSchema   = new Schema({
     user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
     deviceType:	{ type: Number, required: true },
-    value:      { type: Number, required: true }
+    value:      { type: String, required: true }
 });
 
 TokenSchema.index({ user: 1, deviceType: 1, value: 1}, { unique: true });
