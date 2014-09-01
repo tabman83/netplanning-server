@@ -1,3 +1,12 @@
+/*!
+ * NetPlanning
+ * Antonino Parisi <tabman83@gmail.com>
+ *
+ * File name:   user.js
+ * Created:		May 2014
+ * Description:	Mongoose schema of an user
+ */
+
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
@@ -6,13 +15,11 @@ var UserSchema   = new Schema({
 	password:	{ type: String, index: true, required: true },
 	joinDate:	{ type: Date, default: Date.now },
 	lastLogin:	{ type: Date, default: 0 },
-	lastCheck:	{ type: Date },
+	lastCheck:	{ type: Date, default: 0 },
 	sessionId:	{ type: String },
 	language:	{ type: String, default: 'EN' },
-	apple:		{ type: String },
-	google:		{ type: String },
-	winPhone:	{ type: String },
-	schedule:	[{ type: Schema.Types.ObjectId, ref: 'ScheduleItem' }]
+	schedule:	[{ type: Schema.Types.ObjectId, ref: 'ScheduleItem' }],
+	tokens: 	[{ type: Schema.Types.ObjectId, ref: 'Tokens' }]
 });
 
 UserSchema.index({username: 1, password: 1});

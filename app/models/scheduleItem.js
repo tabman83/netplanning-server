@@ -1,6 +1,8 @@
 /*!
- * NetPlanning Engine
+ * NetPlanning
  * Antonino Parisi <tabman83@gmail.com>
+ *
+ * File name:    scheduleItem.js
  * Created:		May 2014
  * Description:	Mongoose schema of a schedule item
  */
@@ -18,7 +20,7 @@ var ScheduleItemSchema   = new Schema({
 	reason:		{ type: String },
 	changedOrUnchanged:	{ type: Boolean, required: true },
 	addedOrCancelled:	{ type: Boolean, required: true },
-	notified:			{ type: Boolean, required: true },
+	notified:			{ type: Boolean, required: true }
 });
 
 ScheduleItemSchema.index({ user: 1, begin: 1, end: 1}, { unique: true });

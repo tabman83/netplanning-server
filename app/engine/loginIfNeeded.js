@@ -8,15 +8,14 @@
  */
 
 var logger = require("../logger");
+var request = require('request');
+var moment = require('moment');
+
+var Config = require('./config');
+var LoginError = require('../errors/LoginError');
+var InvalidLoginError = require('../errors/InvalidLoginError');
 
 module.exports = function(data, next) {
-
-	var request = require('request');
-	var moment = require('moment');
-
-	var Config = require('./config');
-	var LoginError = require('../errors/LoginError');
-	var InvalidLoginError = require('../errors/InvalidLoginError');
 
 	var user = data.user;
 

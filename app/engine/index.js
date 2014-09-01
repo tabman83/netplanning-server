@@ -9,29 +9,7 @@
 
 var Engine = {};
 
-var async = require('async');
-
-var loginIfNeeded = require('./loginIfNeeded');
-var loadNetSchedule = require('./loadNetSchedule');
-var loadDbSchedule = require('./loadDbSchedule');
-var updateSchedule = require('./updateSchedule');
-var notifyChanges = require('./notifyChanges');
-
-Engine.loadAndUpdateSchedule = function(data, next) {
-
-	var fnStartup = function(next) {
-		next( null, data );
-	}
-
-	async.waterfall([
-		fnStartup,
-		loginIfNeeded,
-		loadNetSchedule,
-		loadDbSchedule,
-		updateSchedule,
-        notifyChanges
-	], next);
-
-}
+Engine.login = require('./login');
+Engine.loadAndUpdateSchedule = require('./loadAndUpdateSchedule');
 
 module.exports = Engine;

@@ -7,9 +7,7 @@
  * Description:	API routes
  */
 
-var Routes = function(router, passport) {
-
-    require('./passport')(passport);
+var Routes = function(router) {
 
     router.post('/Login', require('./login') );
 

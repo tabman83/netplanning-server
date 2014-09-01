@@ -1,8 +1,5 @@
 var mongoose   		= require('mongoose');
 var express			= require('express');
-var passport 		= require('passport');
-var bodyParser		= require('body-parser');
-var methodOverride	= require('method-override');
 var apn 			= require('apn');
 var logger 			= require("./app/logger");
 var helpers 		= require('./app/helpers');
@@ -42,19 +39,19 @@ var dispose = function(callback) {
 var appStart = function() {
 
 	app.use(require('morgan')('tiny', { stream: logger.stream }));
-	app.use(bodyParser());
-	app.use(methodOverride());
-	app.use(passport.initialize());
+	app.use(require('body-parser')());
+	app.use(require('method-override')());
+	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
 
 	var router = express.Router();
-	Routes(router, passport);
+	Routes(router);
 
-	app.use('/v1', router );
+	app.use('/v1', router);
 
-	app.use(function(err, req, res, next){
+	app.use(function(err, req, res, next) {
 	  	if(err) {
-	  		logger.error('Server error: '+err.message);
-	  		res.send(500, 'Internal server error.');
+	  		logger.error(err.message);
+			return res.json(500, { message: err.message });
 		}
 	});
 
