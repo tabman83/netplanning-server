@@ -3,11 +3,28 @@
  * Antonino Parisi <tabman83@gmail.com>
  *
  * File name:   tokensDelete.js
- * Created:		8/28/2014 16.16
+ * Created:		9/2/2014 01:38
  * Description:	DELETE /Tokens API
  */
 
-module.exports = function (req, res) {
+var logger  = require("../logger");
+var Token   = require('../models/token');
 
-     res.send('DELETE /Tokens API echo');
+module.exports = function (req, res, next) {
+    if( req.body.token === undefined ) {
+        res.json(401, { message: 'Missing token parameter.' });
+        return;
+    }
+
+    Token.remove({
+        user: req.user.userId,
+        value: req.body.token
+    }, function(err) {
+        if (err) {
+            next(err);
+            return;
+        }
+        res.json(200, { message: 'Token successfully removed.' });
+        return;
+    });
 }
