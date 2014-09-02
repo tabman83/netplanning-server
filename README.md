@@ -1,4 +1,4 @@
-NetPlanning
+netplanning
 ===========
 
-NetPlanning server and client applications.
+NetPlanning server and API to support the NetPlanning client application
