@@ -1,0 +1,158 @@
+body, html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+.hidden
+{
+	display: none;
+}
+.km-calendar:after,
+.km-calendar:before
+{
+    content: "\e089";
+}
+.km-list li
+{
+    padding: .9em .7em;
+}
+
+.km-list li img
+{
+    float: left;
+    width: 1.5em;
+    height: 1.5em;
+    margin: 0em .5em 0 0;
+    border: 1px solid rgba(0,0,0,.2);
+    -webkit-border-radius: 4em;
+    border-radius: 4em;    
+}
+.km-ios7 .km-header .km-navbar
+{
+    background-color: rgb(0, 148, 220);
+    border: 0px;
+}
+.km-on-ios .km-header .km-widget,
+.km-on-ios .km-header .km-view-title
+{
+    color: white;
+}
+.km-ios7 .km-navbar .km-widget.km-button
+{
+    color: white;
+}
+
+.km-ios7 .km-tabstrip .km-button, .km-ios7 .km-popup .k-item, .km-ios7 .k-slider-selection, .km-ios7 .km-actionsheet>li>a
+{
+    color: rgb(0, 148, 220);
+}
+
+.km-ios7 .km-tabstrip .km-button:not(.km-state-active), .km-ios7 li.km-state-active .km-listview-link, .km-ios7 li.km-state-active .km-listview-label {
+	color: #ABACAC;
+}
+
+.km-ios7 .km-badge
+{
+    color: white;
+    -webkit-text-fill-color: currentcolor;
+}
+
+.km-ios7 .km-navbar, .km-ios7 .km-tabstrip {
+	background-color: rgba(244,244,244,1);
+}
+
+
+div#loading>div
+{
+	margin:30px auto;
+}
+
+.div-table 
+{
+    display: table;
+    width:100%;
+}
+
+.col-name,
+.col-time,
+.col-time-wide
+{
+    display: table-cell;
+}
+.col-time
+{
+    text-align: right;
+    
+}
+
+
+/* COMMON STYLES*/
+.view-content h1 {
+    color: #42454a;
+    font-size: 1.8em;
+}
+
+.view-content h1.welcome {
+    text-align: center;
+}
+
+.view-content h3 {
+    color: #42454a;
+    font-size: 1.1em;
+}
+
+.view-content p {
+    color: #4a4e54;
+    font-size: 1em;
+}
+
+/* IMAGE STYLES*/
+.logo-container {
+    width: 100%;
+    display: table;
+}
+.logo {
+	background: #ccc url('../images/LogoBig.png') no-repeat left center;
+    padding-left: 90px;
+    background-size: 70px 70px;
+    height: 90px;
+    width: 100%;
+	color: white;    
+    display: table-cell;
+    vertical-align: middle;
+}
+.logo>h2,
+.logo>h4
+{
+    margin: 0px;
+}
+.logo>h4
+{
+    font-weight: normal;
+}
+
+/* BUTTON STYLES*/
+.buttonArea {
+    text-align: center;
+}
+
+.login-button {
+    width: 50%;
+    max-width: 300px;
+    font-size: .9em;
+    -webkit-appearance: none;
+}
+
+.position-left {
+    float: left;
+}
+
+.position-right {
+    float: right;
+}
+
+.position.center {
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+}
