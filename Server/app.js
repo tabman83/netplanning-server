@@ -55,8 +55,8 @@ var appStart = function() {
 		}
 	});
 
-	var server = app.listen(process.env.npm_package_config_port, process.env.npm_package_config_hostName, function() {
-		logger.info('Listening on %s %s:%d.', process.env.npm_package_config_hostName, server.address().address, server.address().port);
+	var server = app.listen(process.env.npm_package_config_port, function() {
+		logger.info('Listening on %s:%d.', server.address().address, server.address().port);
 	});
 
 
