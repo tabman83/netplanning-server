@@ -18,6 +18,7 @@ module.exports = function( options, callback ) {
 
 	var loadSingleScheduleCallback = function (error, response, body) {
 		if (!error && response.statusCode == 200) {
+
   			if( Config.regExes.sessionTimedOut.test(body) ) {
   				var err = new SessionError("Your session timed out.");
   				callback(err);
@@ -85,6 +86,7 @@ module.exports = function( options, callback ) {
 	var scheduleUri = util.format( Config.uris.scheduleUri, options.sessionId );
 	var options = {
 		uri: scheduleUri,
+		gzip: true,
 		followAllRedirects: true,
 		timeout: 2000,
 		qs: options.qs,

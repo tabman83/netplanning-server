@@ -9,6 +9,7 @@
 
 var logger          = require("../logger");
 var async           = require('async');
+var moment          = require('moment');
 var User            = require('../models/user');
 var ScheduleItem    = require('../models/scheduleItem');
 
@@ -17,7 +18,13 @@ module.exports = function (req, res, next) {
     var fields = ['begin','end','kind','name','changedOrUnchanged','addedOrCancelled','notified'].join(' ');
 
     var queryUser = User.findById(req.user.userId, 'lastCheck')
-    var queryLessons = ScheduleItem.find({_user: req.user.userId}, fields);
+    var queryLessons = ScheduleItem.find({
+        _user: req.user.userId,
+        kind: { $in: ['reserve','recurrente','training','reserveRemplacement','instantHelp','special1','special2'] },
+        begin: { $gte: moment().startOf('day').toDate() }
+    }, fields, {
+        sort: { begin: 1 }
+    });
 
     async.parallel([
         function(callback) {
