@@ -20,8 +20,8 @@ module.exports = function(data, next) {
         require('./loginIfNeeded'),
         require('./loadNetSchedule'),
         require('./loadDbSchedule'),
-        require('./updateSchedule'),
-        require('./notifyChanges')
+        require('./updateSchedule')
+        //require('./notifyChanges')
     ], next);
 
 }

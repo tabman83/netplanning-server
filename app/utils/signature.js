@@ -32,11 +32,11 @@ module.exports = function(options) {
     	}
 
     	if (req.headers && req.headers.signature) {
-        	var data = JSON.stringify(req.body || {});
+        	var data = JSON.stringify(req.body);
         	var signature = crypto.createHmac("md5", options.secret).update(data).digest("hex");
 
         	if( req.headers.signature !== signature ) {
-                logger.debug('Expected signature: %s', signature);
+                logger.debug('Expected signature is: %s', signature);
         		return next(new SignatureError('signature_invalid', { message: 'The signature verification for this message has failed.' }));
         	}
     	} else {
@@ -64,8 +64,7 @@ module.exports = function(options) {
         }
 
         jwt.verify(token, options.secret, options, function(err, decoded) {
-    		if (err) return next(new UnauthorizedError('invalid_token', err));
-
+        if (err) return next(/*new UnauthorizedError('invalid_token', err)*/err);
       		req.user = decoded;
           	next();
     	});

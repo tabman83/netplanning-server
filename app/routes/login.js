@@ -51,8 +51,8 @@ module.exports = function (req, res, next) {
                         return;
                     }
                     //user has been registered thus we create a JWT token
-                    var token = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
-                    res.json(200, { token : token });
+                    var authToken = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
+                    res.json(200, { authToken : authToken });
                 });
             });
             return;
@@ -64,7 +64,7 @@ module.exports = function (req, res, next) {
         }
 
         //user has authenticated correctly thus we create a JWT token
-        var token = jwt.sign({ userId: user._id }, process.env.npm_package_config_secret);
-        res.json(200, { token : token });
+        var authToken = jwt.sign({ userId: user._id }, process.env.npm_package_config_secret);
+        res.json(200, { authToken : authToken });
     });
 }

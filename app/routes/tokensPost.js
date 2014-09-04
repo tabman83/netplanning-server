@@ -22,7 +22,7 @@ module.exports = function (req, res, next) {
     }
 
     Token.create({
-        user: req.user.userId,
+        _user: req.user.userId,
         deviceType: req.body.deviceType,
         value: req.body.token
     }, function(err, token) {

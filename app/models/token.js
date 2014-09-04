@@ -11,7 +11,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var TokenSchema   = new Schema({
-    user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
+    _user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
     deviceType:	{ type: Number, required: true },
     value:      { type: String, required: true }
 });

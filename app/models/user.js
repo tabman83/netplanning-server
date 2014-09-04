@@ -17,9 +17,7 @@ var UserSchema   = new Schema({
 	lastLogin:	{ type: Date, default: 0 },
 	lastCheck:	{ type: Date, default: 0 },
 	sessionId:	{ type: String },
-	language:	{ type: String, default: 'EN' },
-	schedule:	[{ type: Schema.Types.ObjectId, ref: 'ScheduleItem' }],
-	tokens: 	[{ type: Schema.Types.ObjectId, ref: 'Tokens' }]
+	language:	{ type: String, default: 'EN' }
 });
 
 UserSchema.index({username: 1, password: 1});

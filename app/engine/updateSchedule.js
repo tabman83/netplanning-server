@@ -7,13 +7,12 @@
 * Description:	Updates the schedule to the database
 */
 
-var logger = require("../logger");
+var moment          = require('moment');
+var logger          = require("../logger");
+var helpers         = require('../utils/helpers');
+var ScheduleItem    = require('../models/scheduleItem');
 
 module.exports = function(data, netScheduleItems, dbScheduleItems, next) {
-
-    var moment = require('moment');
-    var helpers = require('../helpers');
-    var ScheduleItem = require('../models/scheduleItem');
 
     var user = data.user;
 

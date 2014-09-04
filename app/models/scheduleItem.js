@@ -11,7 +11,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var ScheduleItemSchema   = new Schema({
-	user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
+	_user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
 	begin:		{ type: Date, required: true },
 	end:		{ type: Date, required: true },
 	kind:		{ type: String, required: true },

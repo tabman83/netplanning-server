@@ -8,16 +8,15 @@
  */
 
 var logger = require("../logger");
+var async = require('async');
+
+var ArgumentError = require('../errors/ArgumentError');
+var loadSingleSchedule = require('./loadSingleSchedule');
 
 module.exports = function(data, next) {
 
     var user = data.user;
 	logger.debug('User %s: loading schedule.', user.username);
-
-	var async = require('async');
-
-	var ArgumentError = require('../errors/ArgumentError');
-	var loadSingleSchedule = require('./loadSingleSchedule');
 
 	var cacheBust = (new Date()).getTime();
 	var options1 = { sessionId: user.sessionId, qs: { init: true, cacheBust: cacheBust+'1' } };
@@ -34,12 +33,14 @@ module.exports = function(data, next) {
 			//addedOrCancelled = true/false
 			//notified = true/false
 			var netScheduleItems = schedules.map( function( el ) {
-				el.user = user._id;
+				el._user = user._id;
 				el.changedOrUnchanged = true;
 				el.addedOrCancelled = true;
 				el.notified = false;
 				return el;
 			});
+
+            user.update({ $set: { lastCheck:Date.now() } }).exec();
 
 			logger.debug('User %s: found %d items.', user.username, netScheduleItems.length);
 

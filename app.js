@@ -2,7 +2,6 @@ var mongoose   		= require('mongoose');
 var express			= require('express');
 var apn 			= require('apn');
 var logger 			= require("./app/logger");
-var helpers 		= require('./app/helpers');
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
@@ -43,6 +42,12 @@ var appStart = function() {
 	app.use(require('method-override')());
 	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
 
+	app.all('*', function(req, res, next) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "Signature, Authorization, Content-Type");
+		next();
+	});
+
 	var router = express.Router();
 	Routes(router);
 
@@ -51,7 +56,7 @@ var appStart = function() {
 	app.use(function(err, req, res, next) {
 	  	if(err) {
 	  		logger.error(err.message);
-			return res.json(500, { message: err.message });
+			return res.json(err.status || 500, { message: err.message });
 		}
 	});
 
@@ -75,8 +80,8 @@ var appStart = function() {
 	return;
 	*/
 
-/*
-	User.findOne(credentials, function(err, user) {
+
+	User.findOne(credentials).populate('schedule').exec( function(err, user) {
 
 		var data = {
 			user: user,
@@ -89,12 +94,12 @@ var appStart = function() {
 			} else {
 				logger.debug('User '+user.username+': Done.');
 			}
-
+/*
 			dispose(function () {
 				logger.debug('Database connection disconnected');
-			});
+			});*/
 		});
-	});*/
+	});
 
 }
 
