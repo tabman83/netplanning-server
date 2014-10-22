@@ -43,7 +43,7 @@ module.exports = function(options) {
     		return next(new SignatureError('signature_required', { message: 'Signature is missing for this message.' }));
     	}
 
-    	if (typeof options.skip !== 'undefined') {
+        if (typeof options.skip !== 'undefined') {
       		if (options.skip.indexOf(req.url) > -1) {
         		return next();
       		}
