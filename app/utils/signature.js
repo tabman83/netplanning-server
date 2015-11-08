@@ -22,10 +22,9 @@ module.exports = function(options) {
 
 	return function(req, res, next) {
     	var token;
-
         if (req.method === 'OPTIONS' && req.headers.hasOwnProperty('access-control-request-headers')) {
             for (var ctrlReqs = req.headers['access-control-request-headers'].split(','),i=0;i < ctrlReqs.length; i++) {
-    			if (ctrlReqs[i].indexOf('authorization') != -1) {
+    			if (ctrlReqs[i].indexOf('authorization') !== -1) {
     				return next();
     			}
     		}
@@ -33,7 +32,7 @@ module.exports = function(options) {
 
     	if (req.headers && req.headers.signature) {
         	var data = JSON.stringify(req.body);
-        	var signature = crypto.createHmac("md5", options.secret).update(data).digest("hex");
+        	var signature = crypto.createHmac('md5', options.secret).update(data).digest('hex');
 
         	if( req.headers.signature !== signature ) {
                 logger.debug('Expected signature is: %s', signature);

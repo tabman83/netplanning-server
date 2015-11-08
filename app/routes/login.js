@@ -37,7 +37,7 @@ module.exports = function (req, res, next) {
             }, function( err, sessionId ) {
                 if(err) {
                     // user is not present on the netplanning website
-                    res.json(402, { message: util.format("Unknown user '%s'.", username) });
+                    res.json(404, { message: 'User not found.' });
                     return;
                 }
                 // user has been found on the netplanning website thus we register it

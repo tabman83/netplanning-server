@@ -1,5 +1,5 @@
 {
-  "name": "NetPlanning",
+  "name": "netplanning-server",
   "description": "NetPlanning server and API to support the NetPlanning client application.",
   "version": "0.1.0",
   "config": {

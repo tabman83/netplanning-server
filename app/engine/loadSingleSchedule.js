@@ -67,8 +67,8 @@ module.exports = function( options, callback ) {
 					}
 					*/
   					scheduleItems.push({
-  						begin: new Date(parseInt(begin,10)),
-  						end: new Date(parseInt(end,10)),
+  						begin: new Date(parseInt(begin, 10)),
+  						end: new Date(parseInt(end, 10)),
   						reason: reason,
   						kind: className,
   						userId: userId,

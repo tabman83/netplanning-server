@@ -7,9 +7,9 @@ var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
 
 var app				= express();
-var apnConnection = null;
+var apnConnection  = null;
 
-logger.info("Application %s %s starting up.", process.env.npm_package_name, process.env.npm_package_version);
+logger.info("%s %s starting up.", process.env.npm_package_name, process.env.npm_package_version);
 
 // initializes app and create resources
 var init = function(callback) {
@@ -40,13 +40,12 @@ var appStart = function() {
 	app.use(require('morgan')('tiny', { stream: logger.stream }));
 	app.use(require('body-parser')());
 	app.use(require('method-override')());
-	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
-
-	app.all('*', function(req, res, next) {
-		res.header("Access-Control-Allow-Origin", "*");
-		res.header("Access-Control-Allow-Headers", "Signature, Authorization, Content-Type");
+	app.use(function(req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Headers', 'Signature, Authorization, Origin, X-Requested-With, Content-Type, Accept');
 		next();
 	});
+	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
 
 	var router = express.Router();
 	Routes(router);
