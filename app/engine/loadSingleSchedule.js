@@ -13,7 +13,6 @@ var request 		= require('request');
 var Config 			= require('./config');
 var SessionError 	= require('../errors/SessionError');
 
-
 module.exports = function( options, callback ) {
 
 	var loadSingleScheduleCallback = function (error, response, body) {
@@ -23,6 +22,7 @@ module.exports = function( options, callback ) {
   				var err = new SessionError("Your session timed out.");
   				callback(err);
   			} else {
+
   				var scheduleItems = [];
   				$ = cheerio.load(body);
 				var tds = $('tr>td[style="width:80px"]');
@@ -87,6 +87,7 @@ module.exports = function( options, callback ) {
 	var options = {
 		uri: scheduleUri,
 		gzip: true,
+		encoding: 'binary',
 		followAllRedirects: true,
 		timeout: 2000,
 		qs: options.qs,
