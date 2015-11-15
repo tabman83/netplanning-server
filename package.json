@@ -24,7 +24,7 @@
     "method-override": "~1.0.x",
     "moment": "~2.8.1",
     "mongodb": "latest",
-    "mongoose": "3.8.3",
+    "mongoose": "^4.2.5",
     "morgan": "latest",
     "request": "2.x",
     "winston": "latest"
