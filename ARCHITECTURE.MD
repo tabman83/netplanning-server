@@ -8,9 +8,9 @@ The client application also has the option to trigger a new download of the plan
 
 Following are the endpoints exposed by the server.
 
-- GET /items: gets a list of the planning for the calling user, as it was returned by the latest download from the NetPlanning website; a timestamp is also returned in the header to inform the end user of when the last check occurred
-- DELETE /items/(id): cancels the specified lesson/availability
-- GET /changes: gets the history of the changes to the planning for the calling user
-- DELETE /changes: clears the history of the changes
-- POST /update: forces the update of the planning for the calling user
-- POST /login: logs the user in
+- ```GET /items``` gets a list of the planning for the calling user, as it was returned by the latest download from the NetPlanning website; a timestamp is also returned in the header to inform the end user of when the last check occurred
+- ```DELETE /items/(id)``` cancels the specified lesson/availability
+- ```GET /changes``` gets the history of the changes to the planning for the calling user
+- ```DELETE /changes``` clears the history of the changes
+- ```POST /update``` forces the update of the planning for the calling user
+- ```POST /login``` logs the user in
