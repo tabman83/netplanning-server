@@ -4,7 +4,7 @@ The downloaded planning is then compared to the local stored one and the followi
 - Remote planning is different from the local one: changes are collected and stored in a separate table for changes only. 
 Local data is updated accordingly. A push notifications is issued to all the registed clients.
 
-The client application also has the option to forcibly initiate the download of the planning. An update button will issue an update invokation
+The client application also has the option to trigger a new download of the planning. An update button will issue an update invokation
 to the server that will in turn immediately reset its timer and download the planning.
 
 Following are the endpoints exposed by the server.
