@@ -3,18 +3,20 @@
 	var Config = {};
 
 	Config.uris = {
-		login: "http://netplanning.telelangue.com/portal1/login.do",
-		scheduleUri: "http://netplanning.telelangue.com/portal1/profs/planning.jsp;jsessionid=%s"
-	}
+		login: 'http://netplanning.telelangue.com/portal1/login.do',
+		scheduleUri: 'http://netplanning.telelangue.com/portal1/profs/planning.jsp;jsessionid=%s',
+		top: 'http://netplanning.telelangue.com/portal1/profs/top.jsp;jsessionid=%s'
+	};
 
 	Config.regExes = {
 		invalidLogin: /Incorrect identification/,
+		profileName: /<p\sclass="name">(.+?)<\/p>/,
 		sessionTimedOut: /Votre session est p/,
 		successfulLogin: /home.jsp;jsessionid=([A-Z0-9]{32}\.vlbnp\d)/,
     	scheduleUserId: /userProfile.jsp;jsessionid=[A-Z0-9]{32}\.vlbnp\d\?userId=(\d+)"/,
     	scheduleName: /<strong>(.+?)<\/strong>/,
     	scheduleReason: /<a\shref="#"\sonmouseover="doDisplay\(&#x27;horaire\d{3}&#x27;\)"\sonmouseout="kill\(\)">(.+)<\/a>/
-	}
+	};
 
 	// Node.js
     if (typeof module !== 'undefined' && module.exports) {

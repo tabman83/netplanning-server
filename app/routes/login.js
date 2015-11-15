@@ -34,7 +34,7 @@ module.exports = function (req, res, next) {
             Engine.login({
                 username: username,
                 password: password
-            }, function( err, sessionId ) {
+            }, function( err, result ) {
                 if(err) {
                     // user is not present on the netplanning website
                     res.json(404, { message: 'User not found.' });
@@ -44,16 +44,20 @@ module.exports = function (req, res, next) {
                 User.create({
                     username: username,
                     password: password,
-                    sessionId: sessionId,
+                    sessionId: result.sessionId,
+                    name: result.name,
                     lastLogin: Date.now()
-                },function(err, newUser) {
+                }, function(err, newUser) {
                     if (err) {
                         next(err);
                         return;
                     }
                     //user has been registered thus we create a JWT token
                     var authToken = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
-                    res.json(200, { authToken : authToken });
+                    res.json(200, {
+                        authToken : authToken,
+                        name: newUser.name
+                    });
                 });
             });
             return;
@@ -66,6 +70,9 @@ module.exports = function (req, res, next) {
 
         //user has authenticated correctly thus we create a JWT token
         var authToken = jwt.sign({ userId: user._id }, process.env.npm_package_config_secret);
-        res.json(200, { authToken : authToken });
+        res.json(200, {
+            authToken : authToken,
+            name: user.name
+        });
     });
 }

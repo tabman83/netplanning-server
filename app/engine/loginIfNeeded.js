@@ -14,59 +14,37 @@ var moment = require('moment');
 var Config = require('./config');
 var LoginError = require('../errors/LoginError');
 var InvalidLoginError = require('../errors/InvalidLoginError');
+var performLogin = require('./login');
 
 module.exports = function(data, next) {
 
 	var user = data.user;
-
-	var loginRequestCallback = function (error, response, body) {
-
-  		if (!error && response.statusCode == 200) {
-  			if( Config.regExes.invalidLogin.test(body) ) {
-  				var err = new InvalidLoginError("Incorrect username or password.");
-  				next(err);
-  			} else if( Config.regExes.successfulLogin.test(body) ) {
-  				var sessionId = Config.regExes.successfulLogin.exec(body)[1];
-
-				user.sessionId = sessionId;
+	var diff = moment().diff(user.lastLogin, 'minutes', true);
+	var needsToLogin = diff > 25;
+	if( !needsToLogin ) {
+		logger.debug('User %s (%s) has a valid session.', user.name, user.username);
+		next(null, data);
+	} else {
+		performLogin({
+			username: user.username,
+			password: user.password
+		}, function(err, result) {
+			if(err) {
+				next(err);
+			} else {
+				user.sessionId = result.sessionId;
 				user.lastLogin = new Date();
+				user.name = result.name;
 				user.save( function(saveErr) {
 					if( saveErr ) {
+						logger.error('Error saving user login.');
 						next(saveErr);
 					} else {
 						next(null, data);
 					}
 				});
-				logger.debug('User %s: logged with session %s.', user.username, user.sessionId);
-
-  			} else {
-  				var err = new LoginError("An error occurred during login.");
-  				next(err);
-  			}
-		} else {
-			var err = new LoginError("A network error occurred during login.");
-			next(err);
-		}
-	}
-
-	var diff = moment().diff(user.lastLogin, 'minutes', true);
-	var needsToLogin = diff > 25;
-	if( !needsToLogin ) {
-		next(null, data);
-	} else {
-		var rand = (new Date()).getTime();
-		var options = {
-			uri: Config.uris.login,
-			followAllRedirects: true,
-			timeout: 2000,
-			qs: { cacheBust: rand },
-			method: 'POST',
-			form: {
-				login: user.username,
-				password: user.password
+				logger.debug('User %s: logged with session %s.', user.name, user.sessionId);
 			}
-		}
-		request(options, loginRequestCallback);
+		});
 	}
-
 }

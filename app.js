@@ -1,6 +1,7 @@
 var mongoose   		= require('mongoose');
 var express			= require('express');
 var apn 			= require('apn');
+var async 			= require('async');
 var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
@@ -63,12 +64,12 @@ var appStart = function() {
 		logger.info('Listening on %s:%d.', server.address().address, server.address().port);
 	});
 
-
+/*
 	var credentials = {
 		username: "R3775",
 		password: "NLCGL"
 	};
-
+*/
 	/*
 	User.create({
 		username:"R3775",
@@ -80,24 +81,25 @@ var appStart = function() {
 	*/
 
 
-	User.findOne(credentials).populate('schedule').exec( function(err, user) {
-
-		var data = {
+	var processingQueue = async.queue(function (user, cb) {
+	    logger.info('Scanning user %s (%s).', user.name, user.username);
+		Engine.loadAndUpdateSchedule({
 			user: user,
 			apnConnection: apnConnection
-		};
+		}, cb);
+	}, 2);
 
-		Engine.loadAndUpdateSchedule( data, function(err, data) {
-			if(err) {
-				logger.debug('User '+user.username+': error occurred ('+String(err)+')');
-			} else {
-				logger.debug('User '+user.username+': Done.');
-			}
-/*
-			dispose(function () {
-				logger.debug('Database connection disconnected');
-			});*/
-		});
+	//User.findOne(credentials).populate('schedule').exec( function(err, user) {
+	User.find().exec( function(err, users) {
+		if(err) {
+			return;
+		}
+		if( users.length === 0) {
+			logger.info('No users to scan for updates.');
+			return;
+		}
+		logger.info('Scanning %d users for updates of planning.', users.length);
+		processingQueue.push(users);
 	});
 
 }
