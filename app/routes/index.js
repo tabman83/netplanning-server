@@ -15,7 +15,7 @@ var Routes = function(router) {
     router.post('/Tokens', require('./tokensPost') );
     router.delete('/Tokens', require('./tokensDelete') );
 
-    router.get('/Lessons', require('./lessonsGet') );
+    router.get('/Items', require('./itemsGet') );
 }
 
 module.exports = Routes;
