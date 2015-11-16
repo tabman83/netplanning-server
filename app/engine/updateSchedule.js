@@ -9,7 +9,6 @@
 
 var moment          = require('moment');
 var logger          = require("../logger");
-var helpers         = require('../utils/helpers');
 var ScheduleItem    = require('../models/scheduleItem');
 var ChangeItem      = require('../models/changeItem');
 
