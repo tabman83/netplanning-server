@@ -38,7 +38,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
             ScheduleItem.create(remoteItem);
         } else if(dbItemsFound.length === 1) {
             var dbItem = dbItemsFound.pop();
-            if( dbItem.kind !== remoteItem.kind ) {
+            if( dbItem.kind !== remoteItem.kind && remoteItem.kind !== 's_indispo2') {
                 dbItem.kind = remoteItem.kind;
                 dbItem.save();
                 dbItem.type = +dbItem.isLesson();
@@ -62,7 +62,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
             dbItem.remove();
         } else if(remoteItemsFound.length === 1) {
             var remoteItem = remoteItemsFound.pop();
-            if( remoteItem.kind !== dbItem.kind ) {
+            if( remoteItem.kind !== dbItem.kind && remoteItem.kind !== 's_indispo2' ) {
                 dbItem.kind = remoteItem.kind;
                 dbItem.save();
                 dbItem.type = +dbItem.isLesson();
