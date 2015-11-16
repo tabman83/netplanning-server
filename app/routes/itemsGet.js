@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
     var queryUser = User.findById(req.user.userId, 'lastCheck')
     var queryLessons = ScheduleItem.find({
         _user: req.user.userId,
-        kind: { $neq: 'indispo' },
+        kind: { $ne: 'indispo' },
         begin: { $gte: moment().startOf('day').toDate() }
     }, null, {
         sort: { begin: 1 }
