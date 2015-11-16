@@ -11,12 +11,13 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var ChangeItemSchema   = new Schema({
-	_user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
-	begin:		{ type: Date, required: true },
-	end:		{ type: Date, required: true },
-	oldKind:	{ type: String, required: true },
-	newKind:	{ type: String, required: true },
-	name:		{ type: String }
+	_user:				{ type: Schema.Types.ObjectId, ref: 'User', required: true },
+	begin:				{ type: Date, required: true },
+	isItemNew:			{ type: Boolean, required: true },
+	isItemCancelled:	{ type: Boolean, required: true },
+	end:				{ type: Date, required: true },
+	kind:				{ type: String, required: true },
+	name:				{ type: String }
 });
 
 

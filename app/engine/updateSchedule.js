@@ -15,6 +15,7 @@ var ChangeItem      = require('../models/changeItem');
 module.exports = function(data, remoteItems, dbItems, next) {
 
     var user = data.user;
+    var unavailabilities = ['s_indispo2', 'dispo_stag2', 'dispo', 'indispo', 'indispoPonctuelle'];
 /*
     // asynchronously delete old items
     var today = (new Date()).setHours(0,0,0,0);
@@ -37,13 +38,31 @@ module.exports = function(data, remoteItems, dbItems, next) {
             var dbItem = dbItemsFound.pop();
             if( dbItem.kind !== remoteItem.kind) {
                 logger.debug('Detected change from %s to %s.', dbItem.kind, remoteItem.kind);
+
+                var isNew = isCancelled = false;
+                var kind = name = null;
+                var isOldAnUnavailability = unavailabilities.indexOf(dbItem.kind) > -1;
+                var isNewAnUnavailability = unavailabilities.indexOf(remoteItem.kind) > -1;
+                if(isOldAnUnavailability && !isNewAnUnavailability) {
+                    isNew = true;
+                    isCancelled = false;
+                    kind = remoteItem.kind;
+                    name = remoteItem.name;
+                } else if(!isOldAnUnavailability && isNewAnUnavailability) {
+                    isNew = false;
+                    isCancelled = true;
+                    kind = dbItem.kind;
+                    name = null;
+                }
+
                 ChangeItem.create({
                     _user: dbItem._user,
                 	begin: dbItem.begin,
                 	end: dbItem.end,
-                	oldKind: dbItem.kind,
-                    newKind: remoteItem.kind,
-                	name: dbItem.name || remoteItem.name
+                    isItemNew: isNew,
+                    isItemCancelled: isCancelled,
+                    kind: kind,
+                	name: name
                 }, function(err) {
                     dbItem.kind = remoteItem.kind;
                     dbItem.name = remoteItem.name;
