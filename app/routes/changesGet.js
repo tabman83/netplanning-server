@@ -11,7 +11,7 @@ var logger          = require("../logger");
 var async           = require('async');
 var moment          = require('moment');
 var User            = require('../models/user');
-var ScheduleItem    = require('../models/changeItem');
+var ChangeItem    = require('../models/changeItem');
 
 module.exports = function (req, res, next) {
 
@@ -26,5 +26,5 @@ module.exports = function (req, res, next) {
         }
         res.status(200).json(items);
     });
-    
+
 }
