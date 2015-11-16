@@ -15,7 +15,7 @@
 		successfulLogin: /home.jsp;jsessionid=([A-Z0-9]{32}\.vlbnp\d)/,
     	scheduleUserId: /userProfile.jsp;jsessionid=[A-Z0-9]{32}\.vlbnp\d\?userId=(\d+)"/,
     	scheduleName: /<strong>(.+?)<\/strong>/,
-    	scheduleReason: /<a\shref="#"\sonmouseover="doDisplay\(&#x27;horaire\d{3}&#x27;\)"\sonmouseout="kill\(\)">(.+)<\/a>/
+    	scheduleReason: /<a\shref="#"\sonmouseover="doDisplay\(&apos;horaire\d{3}&apos;\)"\sonmouseout="kill\(\)">(.+?)<\/a>/
 	};
 
 	// Node.js
