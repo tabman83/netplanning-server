@@ -52,7 +52,11 @@ module.exports = function (req, res, next) {
         }
         var lastCheck = results[0] ? results[0].lastCheck : new Date(0);
         var items = results[1];
-        res.status(200).set('Last-Check', lastCheck).json(items);
+        res
+            .header('Access-Control-Expose-Headers', 'last-check')
+            .header('last-check', lastCheck)
+            .status(200)
+            .json(items);
         return;
     });
 }
