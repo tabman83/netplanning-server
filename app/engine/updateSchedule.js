@@ -52,7 +52,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
                     isNew = false;
                     isCancelled = true;
                     kind = dbItem.kind;
-                    name = null;
+                    name = dbItem.name;
                 }
 
                 ChangeItem.create({
