@@ -89,6 +89,10 @@ var appStart = function() {
 		}, cb);
 	}, 2);
 
+	processingQueue.drain = function() {
+		logger.info('All users have been processed. Scheduling next execution in 30 minutes.');
+	};
+
 	//User.findOne(credentials).populate('schedule').exec( function(err, user) {
 	User.find().exec( function(err, users) {
 		if(err) {
@@ -100,7 +104,9 @@ var appStart = function() {
 		}
 		logger.info('Scanning %d users for updates of planning.', users.length);
 		processingQueue.push(users, function(err) {
-			logger.error(err);
+			if(err) {
+				logger.error(err);
+			}
 		});
 	});
 

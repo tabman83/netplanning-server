@@ -7,20 +7,23 @@
  * Description:	Loads the schedule from the database
  */
 
-module.exports = function(data, netScheduleItems, next) {
+module.exports = function(data, remoteItems, next) {
 
 	var ScheduleItem = require('../models/scheduleItem');
+	var moment = require('moment');
 
     var user = data.user;
 
+	var startDate = moment().startOf('week').add(1,'days').toDate();
+
 	ScheduleItem.find({
-		user: user._id,
-		begin: { $gt: Date.now() }
-	}, function(err, dbScheduleItems) {
+		_user: user._id,
+		begin: { $gte: startDate }
+	}, function(err, dbItems) {
 		if(err) {
 			next(err);
 		} else {
-			next(null, data, netScheduleItems, dbScheduleItems);
+			next(null, data, remoteItems, dbItems);
 		}
 	});
 }

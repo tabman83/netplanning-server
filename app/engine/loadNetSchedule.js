@@ -16,7 +16,6 @@ var loadSingleSchedule = require('./loadSingleSchedule');
 module.exports = function(data, next) {
 
     var user = data.user;
-	logger.debug('User %s: loading schedule.', user.username);
 
 	var cacheBust = (new Date()).getTime();
 	var options1 = { sessionId: user.sessionId, qs: { init: true, cacheBust: cacheBust+'1' } };
@@ -27,21 +26,18 @@ module.exports = function(data, next) {
 		if(err) {
 			next(err);
 		} else {
-			var schedules = [].concat(results[0],results[1],results[2]);
+			var schedules = [].concat(results[0], results[1], results[2]);
 
-			//changedOrUnchanged = true/false
-			//addedOrCancelled = true/false
-			//notified = true/false
-			var netScheduleItems = schedules.map( function( el ) {
+			var remoteItems = schedules.map( function( el ) {
 				el._user = user._id;
 				return el;
 			});
 
             user.update({ $set: { lastCheck: Date.now() } }).exec();
 
-			logger.debug('User %s: found %d items.', user.username, netScheduleItems.length);
+			logger.debug('User %s: found %d remote items.', user.username, remoteItems.length);
 
-			next(null, data, netScheduleItems);
+			next(null, data, remoteItems);
 		}
 	});
 
