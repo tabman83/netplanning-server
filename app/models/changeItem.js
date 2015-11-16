@@ -14,16 +14,11 @@ var ChangeItemSchema   = new Schema({
 	_user:		{ type: Schema.Types.ObjectId, ref: 'User', required: true },
 	begin:		{ type: Date, required: true },
 	end:		{ type: Date, required: true },
-	kind:		{ type: String, required: true },
-	type:		{ type: Number, required: true },
-	name:		{ type: String },
-	id:			{ type: Number },
-	reason:		{ type: String }
+	oldKind:	{ type: String, required: true },
+	newKind:	{ type: String, required: true },
+	name:		{ type: String }
 });
 
-ChangeItemSchema.methods.isLesson = function() {
-	return !!this.name;
-};
 
 //ChangeItemSchema.index({ user: 1, begin: 1, end: 1, kind: 1}, { unique: true });
 

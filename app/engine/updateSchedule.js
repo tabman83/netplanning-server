@@ -32,40 +32,23 @@ module.exports = function(data, remoteItems, dbItems, next) {
             return (+dbItem.begin === +remoteItem.begin) && (+dbItem.end === +remoteItem.end);
         });
         if(dbItemsFound.length === 0) {
-            remoteItem.type = 1;
-            ChangeItem.create(remoteItem);
             ScheduleItem.create(remoteItem);
         } else if(dbItemsFound.length === 1) {
             var dbItem = dbItemsFound.pop();
-            if( dbItem.kind !== remoteItem.kind && remoteItem.kind !== 's_indispo2') {
-                dbItem.kind = remoteItem.kind;
-                dbItem.save();
-                dbItem.type = +dbItem.isLesson();
-                ChangeItem.create(dbItem);
-            }
-        } else {
-            var err = new Error('Duplicate item found.');
-            next(err);
-            return false;
-        }
-    });
-
-    dbItems.forEach(function(dbItem) {
-        // look for this db item among the remote ones, if it is not found then it is a cancelled lesson
-        var remoteItemsFound = remoteItems.filter(function(remoteItem) {
-            return (+dbItem.begin === +remoteItem.begin) && (+dbItem.end === +remoteItem.end);
-        });
-        if(remoteItemsFound.length === 0) {
-            dbItem.type = 0;
-            ChangeItem.create(dbItem);
-            dbItem.remove();
-        } else if(remoteItemsFound.length === 1) {
-            var remoteItem = remoteItemsFound.pop();
-            if( remoteItem.kind !== dbItem.kind && remoteItem.kind !== 's_indispo2' ) {
-                dbItem.kind = remoteItem.kind;
-                dbItem.save();
-                dbItem.type = +dbItem.isLesson();
-                ChangeItem.create(dbItem);
+            if( dbItem.kind !== remoteItem.kind) {
+                logger.debug('Detected change from %s to %s.', dbItem.kind, remoteItem.kind);
+                ChangeItem.create({
+                    _user: dbItem._user,
+                	begin: dbItem.begin,
+                	end: dbItem.end,
+                	oldKind: dbItem.kind,
+                    newKind: remoteItem.kind,
+                	name: dbItem.name || remoteItem.name
+                }, function(err) {
+                    dbItem.kind = remoteItem.kind;
+                    dbItem.name = remoteItem.name;
+                    dbItem.save();
+                });
             }
         } else {
             var err = new Error('Duplicate item found.');

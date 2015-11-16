@@ -15,14 +15,12 @@ var ScheduleItem    = require('../models/scheduleItem');
 
 module.exports = function (req, res, next) {
 
-    var fields = ['begin','end','kind','name','reason','changedOrUnchanged','addedOrCancelled','notified'].join(' ');
-
     var queryUser = User.findById(req.user.userId, 'lastCheck')
     var queryLessons = ScheduleItem.find({
         _user: req.user.userId,
-        //kind: { $in: ['reserve','recurrente','training','reserveRemplacement','instantHelp','special1','special2'] },
+        kind: { $neq: 'indispo' },
         begin: { $gte: moment().startOf('day').toDate() }
-    }, fields, {
+    }, null, {
         sort: { begin: 1 }
     });
 

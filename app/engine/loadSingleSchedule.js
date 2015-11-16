@@ -32,10 +32,6 @@ module.exports = function( options, callback ) {
 					var htmlEl = $(htmlEl);
 					var className = htmlEl.attr('class');
 
-					if( className === 'indispo' ) {
-						return true;
-					}
-
 					var begin = htmlEl.attr('debut');
 					var end = htmlEl.attr('fin');
 					var content = htmlEl.html();
