@@ -15,7 +15,7 @@ var ScheduleItem    = require('../models/scheduleItem');
 module.exports = function(data, netScheduleItems, dbScheduleItems, next) {
 
     var user = data.user;
-
+/*
     // net - db
     var netMinusDb = helpers.difference( netScheduleItems, dbScheduleItems, ['begin', 'end', 'kind'] );
     logger.debug('User %s: Net-Db: %d', user.username, netMinusDb.length);
@@ -40,5 +40,12 @@ module.exports = function(data, netScheduleItems, dbScheduleItems, next) {
         } else {
             next(null, data);
         }
+    });*/
+
+    netScheduleItems.forEach(function(remoteItem) {
+
+        
+
+
     });
 }
