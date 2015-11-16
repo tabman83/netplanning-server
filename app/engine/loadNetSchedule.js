@@ -34,13 +34,10 @@ module.exports = function(data, next) {
 			//notified = true/false
 			var netScheduleItems = schedules.map( function( el ) {
 				el._user = user._id;
-				el.changedOrUnchanged = true;
-				el.addedOrCancelled = true;
-				el.notified = false;
 				return el;
 			});
 
-            user.update({ $set: { lastCheck:Date.now() } }).exec();
+            user.update({ $set: { lastCheck: Date.now() } }).exec();
 
 			logger.debug('User %s: found %d items.', user.username, netScheduleItems.length);
 

@@ -11,6 +11,7 @@ var util 			= require('util');
 var cheerio 		= require('cheerio');
 var request 		= require('request');
 var Config 			= require('./config');
+var logger          = require("../logger");
 var SessionError 	= require('../errors/SessionError');
 
 module.exports = function( options, callback ) {
@@ -89,7 +90,7 @@ module.exports = function( options, callback ) {
 		gzip: true,
 		encoding: 'binary',
 		followAllRedirects: true,
-		timeout: 2000,
+		timeout: 10000,
 		qs: options.qs,
 		method: 'GET'
 	}

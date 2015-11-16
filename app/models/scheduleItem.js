@@ -17,10 +17,7 @@ var ScheduleItemSchema   = new Schema({
 	kind:		{ type: String, required: true },
 	name:		{ type: String },
 	id:			{ type: Number },
-	reason:		{ type: String },
-	changedOrUnchanged:	{ type: Boolean, required: true },
-	addedOrCancelled:	{ type: Boolean, required: true },
-	notified:			{ type: Boolean, required: true }
+	reason:		{ type: String }
 });
 
 ScheduleItemSchema.index({ user: 1, begin: 1, end: 1}, { unique: true });

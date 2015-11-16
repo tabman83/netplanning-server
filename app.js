@@ -99,7 +99,9 @@ var appStart = function() {
 			return;
 		}
 		logger.info('Scanning %d users for updates of planning.', users.length);
-		processingQueue.push(users);
+		processingQueue.push(users, function(err) {
+			logger.error(err);
+		});
 	});
 
 }

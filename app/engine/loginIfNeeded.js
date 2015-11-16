@@ -43,7 +43,6 @@ module.exports = function(data, next) {
 						next(null, data);
 					}
 				});
-				logger.debug('User %s: logged with session %s.', user.name, user.sessionId);
 			}
 		});
 	}
