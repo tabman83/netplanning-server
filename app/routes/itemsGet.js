@@ -12,49 +12,45 @@ var async           = require('async');
 var moment          = require('moment');
 var User            = require('../models/user');
 var ScheduleItem    = require('../models/scheduleItem');
+var Engine 			= require('../engine');
 
 module.exports = function (req, res, next) {
 
-    var queryUser = User.findById(req.user.userId, 'lastCheck')
-    var queryLessons = ScheduleItem.find({
-        _user: req.user.userId,
-        kind: { $ne: 'indispo' },
-        begin: { $gte: moment().startOf('day').toDate() }
-    }, null, {
-        sort: { begin: 1 }
-    });
+    function getItems(user) {
+        ScheduleItem.find({
+            _user: req.user.userId,
+            kind: { $ne: 'indispo' },
+            begin: { $gte: moment().startOf('day').toDate() }
+        }, null, {
+            sort: { begin: 1 }
+        }, function(err, items) {
+            if (err) {
+                next(err);
+                return;
+            }
+            res
+                .header('Access-Control-Expose-Headers', 'last-check')
+                .header('last-check', user.lastCheck)
+                .status(200)
+                .json(items);
+        });
+    }
 
-    async.parallel([
-        function(callback) {
-            queryUser.exec(function(err, user) {
+    User.findById(req.user.userId).then(function(user) {
+
+        if(req.query.force) {
+            Engine.loadAndUpdateSchedule({
+                user: user
+            }, function(err) {
                 if (err) {
-                    callback(err);
+                    next(err);
+                    return;
                 }
-
-                callback(null, user);
-            })
-        },
-        function(callback) {
-            queryLessons.exec(function(err, lessons) {
-                if (err) {
-                    callback(err);
-                }
-
-                callback(null, lessons);
-            })
+                getItems(user);
+            });
+        } else {
+            getItems(user);
         }
-    ], function(err, results) {
-        if (err) {
-            next(err);
-            return;
-        }
-        var lastCheck = results[0] ? results[0].lastCheck : new Date(0);
-        var items = results[1];
-        res
-            .header('Access-Control-Expose-Headers', 'last-check')
-            .header('last-check', lastCheck)
-            .status(200)
-            .json(items);
-        return;
+
     });
 }

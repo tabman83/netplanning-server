@@ -64,12 +64,6 @@ var appStart = function() {
 		logger.info('Listening on %s:%d.', server.address().address, server.address().port);
 	});
 
-/*
-	var credentials = {
-		username: "R3775",
-		password: "NLCGL"
-	};
-*/
 	/*
 	User.create({
 		username:"R3775",
@@ -84,8 +78,7 @@ var appStart = function() {
 	var processingQueue = async.queue(function (user, cb) {
 	    logger.info('Scanning user %s (%s).', user.name, user.username);
 		Engine.loadAndUpdateSchedule({
-			user: user,
-			apnConnection: apnConnection
+			user: user
 		}, cb);
 	}, 2);
 
