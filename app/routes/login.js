@@ -52,11 +52,20 @@ module.exports = function (req, res, next) {
                         next(err);
                         return;
                     }
-                    //user has been registered thus we create a JWT token
-                    var authToken = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
-                    res.json(200, {
-                        authToken : authToken,
-                        name: newUser.name
+
+                    Engine.loadAndUpdateSchedule({
+                        user: newUser
+                    }, function(err) {
+                        if (err) {
+                            next(err);
+                            return;
+                        }
+                        //user has been registered thus we create a JWT token
+                        var authToken = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
+                        res.json(200, {
+                            authToken : authToken,
+                            name: newUser.name
+                        });
                     });
                 });
             });
