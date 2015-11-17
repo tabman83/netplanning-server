@@ -37,8 +37,8 @@ module.exports = function (req, res, next) {
     }
 
     User.findById(req.user.userId).then(function(user) {
-
-        if(req.query.force) {
+        var force = (req.query.force.toLowerCase() === 'true');
+        if(force) {
             Engine.loadAndUpdateSchedule({
                 user: user
             }, function(err) {
