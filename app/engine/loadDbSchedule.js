@@ -15,7 +15,6 @@ module.exports = function(data, remoteItems, next) {
     var user = data.user;
 
 	var startDate = moment().startOf('week').add(1,'days').toDate();
-
 	ScheduleItem.find({
 		_user: user._id,
 		begin: { $gte: startDate }

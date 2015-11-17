@@ -24,6 +24,6 @@ ScheduleItemSchema.methods.isLesson = function() {
 	return !!this.name;
 };
 
-ScheduleItemSchema.index({ user: 1, begin: 1, end: 1, kind: 1}, { unique: true });
+ScheduleItemSchema.index({ _user: 1, begin: 1, end: 1, kind: 1}, { unique: true });
 
 module.exports = mongoose.model('ScheduleItem', ScheduleItemSchema);
