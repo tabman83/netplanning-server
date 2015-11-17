@@ -33,8 +33,6 @@ module.exports = function(data, next) {
 				return el;
 			});
 
-            user.update({ $set: { lastCheck: Date.now() } }).exec();
-
 			logger.debug('User %s: found %d remote items.', user.username, remoteItems.length);
 
 			next(null, data, remoteItems);

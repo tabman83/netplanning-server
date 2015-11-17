@@ -76,5 +76,12 @@ module.exports = function(data, remoteItems, dbItems, next) {
         }
     });
 
-    next(null, data);
+    user.lastCheck = Date.now();
+    user.save(function(err) {
+        if(err) {
+            next(err);
+            return;
+        }
+        next(null, data);
+    });
 }
