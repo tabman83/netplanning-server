@@ -16,7 +16,7 @@ var Engine 	= require('../engine');
 module.exports = function (req, res, next) {
 
     if( req.body.username === undefined || req.body.password === undefined ) {
-        return next(new Error({ status: 401, message: 'Missing credentials.' }));
+        return next(new AppError(401, 'Missing credentials.'));
     }
 
     var username = req.body.username.toUpperCase();
@@ -37,8 +37,7 @@ module.exports = function (req, res, next) {
             }, function( err, result ) {
                 if(err) {
                     // user is not present on the netplanning website
-                    return next(new Error({ status: 404, message: 'User not found.' }));
-                    return;
+                    return next(new AppError(404, 'User not found.'));
                 }
                 // user has been found on the netplanning website thus we register it
                 User.create({
@@ -73,7 +72,7 @@ module.exports = function (req, res, next) {
         }
 
         if( user.password !== password) {
-            return next(new Error({ status: 403, message: 'Invalid password.' }));
+            return next(new AppError(403, 'Invalid password.'));
         }
 
         //user has authenticated correctly thus we create a JWT token

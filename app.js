@@ -59,7 +59,7 @@ var appStart = function() {
 			}
 
 			if(user === null) {
-				return next(new Error({ status: 401, message: 'Session not found' }));
+				return next(new AppError(401, 'Session not found'));
 			} else {
 				req.user = user;
 				next();

@@ -12,6 +12,7 @@ var cheerio 		= require('cheerio');
 var request 		= require('request');
 var Config 			= require('./config');
 var logger          = require("../logger");
+var AppError 		= require('../appError');
 
 module.exports = function( options, callback ) {
 
@@ -19,7 +20,7 @@ module.exports = function( options, callback ) {
 		if (!error && response.statusCode == 200) {
 
   			if( Config.regExes.sessionTimedOut.test(body) ) {
-  				var err = new Error({ status: 401, message: 'Your session timed out.' });
+  				var err = new AppError(401, 'Your session timed out.');
   				callback(err);
   			} else {
 
@@ -74,7 +75,7 @@ module.exports = function( options, callback ) {
   				callback(null, scheduleItems);
   			}
 		} else {
-			var err = new Error({ status: 500, message: 'A network error occurred during schedule load.' });
+			var err = new AppError(500, 'A network error occurred during schedule load.');
 			callback(err);
 		}
   	}

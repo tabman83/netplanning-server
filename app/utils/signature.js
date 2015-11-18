@@ -10,11 +10,12 @@
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var logger = require('../logger');
+var AppError = require('../appError');
 
 module.exports = function(options) {
 
     if (!options || !options.secret) {
-		throw new Error('Secret should be set.');
+		throw new AppError('Secret should be set.');
 	}
 
 	return function(req, res, next) {
@@ -33,10 +34,10 @@ module.exports = function(options) {
 
         	if( req.headers.signature !== signature ) {
                 logger.debug('Expected signature was: %s', signature);
-        		return next(new Error({ status: 401, message: 'The signature verification for this message has failed.' }));
+        		return next(new AppError(401, 'The signature verification for this message has failed.'));
         	}
     	} else {
-    		return next(new Error({ status: 401, message: 'Signature is missing for this message.' }));
+    		return next(new AppError(401, 'Signature is missing for this message.'));
     	}
 
         if (typeof options.skip !== 'undefined') {
@@ -53,15 +54,15 @@ module.exports = function(options) {
               		token = credentials;
             	}
           	} else {
-            	return next(new Error({ status: 401, message: 'Format is Authorization: Bearer [token].' }));
+            	return next(new AppError(401, 'Format is Authorization: Bearer [token].'));
           	}
     	} else {
-    		return next(new Error({ status: 401, message: 'No Authorization header was found.' }));
+    		return next(new AppError(401, 'No Authorization header was found.'));
         }
 
         jwt.verify(token, options.secret, options, function(err, decoded) {
             if (err) {
-                next(new Error({ status: 401, message: 'Invalid token.' }));
+                next(new AppError(401, 'Invalid token.'));
                 return;
             }
       		req.decoded = decoded;

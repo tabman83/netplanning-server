@@ -11,6 +11,7 @@ var moment          = require('moment');
 var logger          = require("../logger");
 var ScheduleItem    = require('../models/scheduleItem');
 var ChangeItem      = require('../models/changeItem');
+var AppError        = require('../appError');
 
 module.exports = function(data, remoteItems, dbItems, next) {
 
@@ -70,8 +71,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
                 });
             }
         } else {
-            var err = new Error({ status: 500, message: 'Duplicate item found.' });
-            next(err);
+            next(new AppError('Duplicate item found.'));
             return false;
         }
     });

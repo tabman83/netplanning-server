@@ -10,8 +10,8 @@
 var async = require('async');
 var request = require('request');
 var util = require('util');
-
 var Config = require('./config');
+var AppError = require('../appError');
 
 module.exports = function(credentials, callback) {
 
@@ -32,7 +32,7 @@ module.exports = function(credentials, callback) {
                     name: name
                 });
             } else {
-                var err = new Error({ status: 500, message: 'A network error occurred during login.' });
+                var err = new AppError('A network error occurred during login.');
                 cb(err);
             }
         });
@@ -52,17 +52,17 @@ module.exports = function(credentials, callback) {
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 if( Config.regExes.invalidLogin.test(body) ) {
-                    var err = new Error({ status: 401, message: 'Incorrect username or password.' });
+                    var err = new AppError('Incorrect username or password.');
                     cb(err);
                 } else if( Config.regExes.successfulLogin.test(body) ) {
                     var sessionId = Config.regExes.successfulLogin.exec(body)[1];
                     cb(null, sessionId);
                 } else {
-                    var err = new Error({ status: 500, message: 'An error occurred during login.' });
+                    var err = new AppError('An error occurred during login.');
                     cb(err);
                 }
             } else {
-                var err = new Error({ status: 500, message: 'An error occurred during login.' });
+                var err = new AppError('An error occurred during login.');
                 cb(err);
             }
         });
