@@ -23,18 +23,17 @@ module.exports = function(credentials, callback) {
         request({
             uri: profileUri,
             followAllRedirects: true,
-            timeout: 2000,
+            timeout: 10000,
             qs: { cacheBust: Date.now() },
             method: 'GET'
         }, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
+            if (!error && response.statusCode === 200) {
                 var name = Config.regExes.profileName.exec(body)[1];
                 cb(null, {
                     sessionId: sessionId,
                     name: name
                 });
             } else {
-                console.log(body);
                 var err = new LoginError("A network error occurred during login.");
                 cb(err);
             }
@@ -45,7 +44,7 @@ module.exports = function(credentials, callback) {
         request({
             uri: Config.uris.login,
             followAllRedirects: true,
-            timeout: 2000,
+            timeout: 10000,
             qs: { cacheBust: Date.now() },
             method: 'POST',
             form: {
