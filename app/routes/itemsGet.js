@@ -30,7 +30,7 @@ module.exports = function (req, res, next) {
             }
             res
                 .header('Access-Control-Expose-Headers', 'last-check')
-                .header('last-check', user.lastCheck)
+                .header('last-check', req.user.lastCheck)
                 .status(200)
                 .json(items);
         });
