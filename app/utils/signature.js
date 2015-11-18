@@ -63,7 +63,10 @@ module.exports = function(options) {
         }
 
         jwt.verify(token, options.secret, options, function(err, decoded) {
-        if (err) return next(/*new UnauthorizedError('invalid_token', err)*/err);
+            if (err) {
+                next(/*new UnauthorizedError('invalid_token', err)*/err);
+                return;
+            }
       		req.decoded = decoded;
           	next();
     	});

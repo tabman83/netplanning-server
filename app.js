@@ -48,7 +48,7 @@ var appStart = function() {
 	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
 
 	app.use(function(req, res, next) {
-		if (req.method === 'OPTIONS') {
+		if (req.method === 'OPTIONS' || req.decoded === undefined) {
 			next();
 			return;
 		}
