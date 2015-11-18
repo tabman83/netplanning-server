@@ -52,7 +52,7 @@ module.exports = function(credentials, callback) {
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 if( Config.regExes.invalidLogin.test(body) ) {
-                    var err = new AppError('Incorrect username or password.');
+                    var err = new AppError(401, 'Incorrect username or password.');
                     cb(err);
                 } else if( Config.regExes.successfulLogin.test(body) ) {
                     var sessionId = Config.regExes.successfulLogin.exec(body)[1];
@@ -67,8 +67,6 @@ module.exports = function(credentials, callback) {
             }
         });
     }
-
-
 
     async.waterfall([
         doLogin,

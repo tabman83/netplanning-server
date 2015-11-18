@@ -12,6 +12,7 @@ var util    = require("util");
 var logger  = require("../logger");
 var User    = require('../models/user');
 var Engine 	= require('../engine');
+var AppError = require('../appError');
 
 module.exports = function (req, res, next) {
 

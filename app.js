@@ -6,6 +6,7 @@ var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
+var AppError		= require('./app/appError');
 var app				= express();
 var apnConnection  = null;
 
@@ -82,17 +83,6 @@ var appStart = function() {
 	var server = app.listen(process.env.npm_package_config_port, function() {
 		logger.info('Listening on %s:%d.', server.address().address, server.address().port);
 	});
-
-	/*
-	User.create({
-		username:"R3775",
-		password:"NLCGL"
-	},function() {
-		mongoose.disconnect();
-	});
-	return;
-	*/
-
 
 	var processingQueue = async.queue(function (user, cb) {
 	    logger.info('Scanning user %s (%s).', user.name, user.username);
