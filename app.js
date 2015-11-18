@@ -59,7 +59,7 @@ var appStart = function() {
 			}
 
 			if(user === null) {
-				res.status(404).json({ message: 'Session not found' });
+				return next(new Error({ status: 401, message: 'Session not found' }));
 			} else {
 				req.user = user;
 				next();
@@ -74,8 +74,8 @@ var appStart = function() {
 
 	app.use(function(err, req, res, next) {
 	  	if(err) {
-	  		logger.error(err.message);
-			return res.json(err.status || 500, { message: err.message });
+	  		logger.error(err.message, err.status);
+			return res.status(err.status || 500).json({ message: err.message });
 		}
 	});
 

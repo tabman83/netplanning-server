@@ -70,7 +70,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
                 });
             }
         } else {
-            var err = new Error('Duplicate item found.');
+            var err = new Error({ status: 500, message: 'Duplicate item found.' });
             next(err);
             return false;
         }

@@ -16,7 +16,7 @@ var Engine 	= require('../engine');
 module.exports = function (req, res, next) {
 
     if( req.body.username === undefined || req.body.password === undefined ) {
-        return res.json(401, { message: 'Missing credentials.' });
+        return next(new Error({ status: 401, message: 'Missing credentials.' }));
     }
 
     var username = req.body.username.toUpperCase();
@@ -37,7 +37,7 @@ module.exports = function (req, res, next) {
             }, function( err, result ) {
                 if(err) {
                     // user is not present on the netplanning website
-                    res.json(404, { message: 'User not found.' });
+                    return next(new Error({ status: 404, message: 'User not found.' }));
                     return;
                 }
                 // user has been found on the netplanning website thus we register it
@@ -62,7 +62,7 @@ module.exports = function (req, res, next) {
                         }
                         //user has been registered thus we create a JWT token
                         var authToken = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
-                        res.json(200, {
+                        res.status(200).json({
                             authToken : authToken,
                             name: newUser.name
                         });
@@ -73,13 +73,12 @@ module.exports = function (req, res, next) {
         }
 
         if( user.password !== password) {
-            res.json(403, { message: 'Invalid password.' });
-            return;
+            return next(new Error({ status: 403, message: 'Invalid password.' }));
         }
 
         //user has authenticated correctly thus we create a JWT token
         var authToken = jwt.sign({ userId: user._id }, process.env.npm_package_config_secret);
-        res.json(200, {
+        res.status(200).json({
             authToken : authToken,
             name: user.name
         });

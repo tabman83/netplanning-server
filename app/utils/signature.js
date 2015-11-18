@@ -11,9 +11,6 @@ var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var logger = require('../logger');
 
-var UnauthorizedError = require('../errors/UnauthorizedError');
-var SignatureError = require('../errors/SignatureError');
-
 module.exports = function(options) {
 
     if (!options || !options.secret) {
@@ -35,11 +32,11 @@ module.exports = function(options) {
         	var signature = crypto.createHmac('md5', options.secret).update(data).digest('hex');
 
         	if( req.headers.signature !== signature ) {
-                logger.debug('Expected signature is: %s', signature);
-        		return next(new SignatureError('signature_invalid', { message: 'The signature verification for this message has failed.' }));
+                logger.debug('Expected signature was: %s', signature);
+        		return next(new Error({ status: 401, message: 'The signature verification for this message has failed.' }));
         	}
     	} else {
-    		return next(new SignatureError('signature_required', { message: 'Signature is missing for this message.' }));
+    		return next(new Error({ status: 401, message: 'Signature is missing for this message.' }));
     	}
 
         if (typeof options.skip !== 'undefined') {
@@ -56,15 +53,15 @@ module.exports = function(options) {
               		token = credentials;
             	}
           	} else {
-            	return next(new UnauthorizedError('credentials_bad_format', { message: 'Format is Authorization: Bearer [token].' }));
+            	return next(new Error({ status: 401, message: 'Format is Authorization: Bearer [token].' }));
           	}
     	} else {
-    		return next(new UnauthorizedError('credentials_required', { message: 'No Authorization header was found.' }));
+    		return next(new Error({ status: 401, message: 'No Authorization header was found.' }));
         }
 
         jwt.verify(token, options.secret, options, function(err, decoded) {
             if (err) {
-                next(/*new UnauthorizedError('invalid_token', err)*/err);
+                next(new Error({ status: 401, message: 'Invalid token.' }));
                 return;
             }
       		req.decoded = decoded;

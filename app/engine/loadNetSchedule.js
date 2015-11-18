@@ -9,8 +9,6 @@
 
 var logger = require("../logger");
 var async = require('async');
-
-var ArgumentError = require('../errors/ArgumentError');
 var loadSingleSchedule = require('./loadSingleSchedule');
 
 module.exports = function(data, next) {

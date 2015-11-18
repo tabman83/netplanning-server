@@ -12,8 +12,6 @@ var request = require('request');
 var moment = require('moment');
 
 var Config = require('./config');
-var LoginError = require('../errors/LoginError');
-var InvalidLoginError = require('../errors/InvalidLoginError');
 var performLogin = require('./login');
 
 module.exports = function(data, next) {
