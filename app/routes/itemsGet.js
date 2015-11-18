@@ -16,9 +16,9 @@ var Engine 			= require('../engine');
 
 module.exports = function (req, res, next) {
 
-    function getItems(user) {
+    function getItems() {
         ScheduleItem.find({
-            _user: req.user.userId,
+            _user: req.user._id,
             kind: { $ne: 'indispo' },
             begin: { $gte: moment().startOf('day').toDate() }
         }, null, {
@@ -36,30 +36,18 @@ module.exports = function (req, res, next) {
         });
     }
 
-    User.findById(req.user.userId, function(err, user) {
-	if(err) {
-            next(err);
-	    return;
-	}
-	if( user === null) {
-	    var err = new Error('Invalid session');
-	    next(err);
-	    return;
-	}
-        var force = (req.query.force.toLowerCase() === 'true');
-        if(force) {
-            Engine.loadAndUpdateSchedule({
-                user: user
-            }, function(err) {
-                if (err) {
-                    next(err);
-                    return;
-                }
-                getItems(user);
-            });
-        } else {
-            getItems(user);
-        }
-
-    });
+    var force = (req.query.force.toLowerCase() === 'true');
+    if(force) {
+        Engine.loadAndUpdateSchedule({
+            user: req.user
+        }, function(err) {
+            if (err) {
+                next(err);
+                return;
+            }
+            getItems();
+        });
+    } else {
+        getItems();
+    }
 }

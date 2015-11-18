@@ -16,7 +16,7 @@ var ChangeItem    = require('../models/changeItem');
 module.exports = function (req, res, next) {
 
     ChangeItem.find({
-        _user: req.user.userId
+        _user: user._id
     }, null, {
         sort: { begin: 1 }
     }, function(err, items) {

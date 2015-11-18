@@ -6,7 +6,6 @@ var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
-
 var app				= express();
 var apnConnection  = null;
 
@@ -47,6 +46,26 @@ var appStart = function() {
 		next();
 	});
 	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
+
+	app.use(function(req, res, next) {
+		if (req.method === 'OPTIONS') {
+			next();
+			return;
+		}
+		User.findById(req.decoded.userId, function(err, user) {
+			if(err) {
+				next(err);
+				return;
+			}
+
+			if(user === null) {
+				res.status(404).json({ message: 'Session not found' });
+			} else {
+				req.user = user;
+				next();
+			}
+		});
+	});
 
 	var router = express.Router();
 	Routes(router);
