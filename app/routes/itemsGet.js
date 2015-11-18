@@ -36,7 +36,16 @@ module.exports = function (req, res, next) {
         });
     }
 
-    User.findById(req.user.userId).then(function(user) {
+    User.findById(req.user.userId, function(err, user) {
+	if(err) {
+            next(err);
+	    return;
+	}
+	if( user === null) {
+	    var err = new Error('Invalid session');
+	    next(err);
+	    return;
+	}
         var force = (req.query.force.toLowerCase() === 'true');
         if(force) {
             Engine.loadAndUpdateSchedule({
