@@ -11,6 +11,7 @@
 	Config.regExes = {
 		invalidLogin: /Incorrect identification/,
 		profileName: /<p\sclass="name">(.+?)<\/p>/,
+		profileTimeZoneDisplayName: /<p\sclass="timeZone">Time\sZone\s+(.+?)<\/p>/,
 		sessionTimedOut: /Votre session est p/,
 		successfulLogin: /home.jsp;jsessionid=([A-Z0-9]{32}\.vlbnp\d)/,
     	scheduleUserId: /userProfile.jsp;jsessionid=[A-Z0-9]{32}\.vlbnp\d\?userId=(\d+)"/,

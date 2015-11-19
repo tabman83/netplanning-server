@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "config": {
     "port": "50000",
-    "dbUrl": "mongodb://localhost/NetPlanning",
+    "dbUrl": "mongodb://digitalocean.thenino.net/NetPlanning",
     "logLevel": "short",
     "secret": "sVkJsK41#>P_GN?:y)]FPL~r?MV3`0x-!N{4J.X4`Xu87M-<.T:+??;el@yKU_73"
   },

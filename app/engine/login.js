@@ -12,6 +12,7 @@ var request = require('request');
 var util = require('util');
 var Config = require('./config');
 var AppError = require('../appError');
+var convertTimeZone = require('./convertTimeZone');
 
 module.exports = function(credentials, callback) {
 
@@ -27,9 +28,11 @@ module.exports = function(credentials, callback) {
         }, function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 var name = Config.regExes.profileName.exec(body)[1];
+                var timeZoneDisplayName = Config.regExes.profileTimeZoneDisplayName.exec(body)[1];
                 cb(null, {
                     sessionId: sessionId,
-                    name: name
+                    name: name,
+                    timeZoneDisplayName: convertTimeZone(timeZoneDisplayName)
                 });
             } else {
                 var err = new AppError('A network error occurred during login.');

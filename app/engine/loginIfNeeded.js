@@ -33,6 +33,7 @@ module.exports = function(data, next) {
 				user.sessionId = result.sessionId;
 				user.lastLogin = new Date();
 				user.name = result.name;
+				user.timeZoneDisplayName = result.timeZoneDisplayName;
 				user.save( function(saveErr) {
 					if( saveErr ) {
 						logger.error('Error saving user login.');
