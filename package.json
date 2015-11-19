@@ -23,6 +23,7 @@
     "jsonwebtoken": "latest",
     "method-override": "~1.0.x",
     "moment": "~2.8.1",
+    "moment-timezone": "^0.4.1",
     "mongodb": "latest",
     "mongoose": "^4.2.5",
     "morgan": "latest",

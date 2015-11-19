@@ -74,17 +74,5 @@ module.exports = function(credentials, callback) {
     async.waterfall([
         doLogin,
         getProfile
-    ], function(err, results) {
-        if(err) {
-            callback(err)
-        } else {
-            var result = {
-                sessionId: results[0],
-                name: results[1]
-            };
-            callback(null, results);
-        }
-    });
-
-
+    ], callback);
 }

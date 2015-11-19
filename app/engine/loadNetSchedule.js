@@ -16,9 +16,9 @@ module.exports = function(data, next) {
     var user = data.user;
 
 	var cacheBust = (new Date()).getTime();
-	var options1 = { sessionId: user.sessionId, qs: { init: true, cacheBust: cacheBust+'1' } };
-	var options2 = { sessionId: user.sessionId, qs: { next: true, cacheBust: cacheBust+'2' } };
-	var options3 = { sessionId: user.sessionId, qs: { next: true, cacheBust: cacheBust+'3' } };
+	var options1 = { sessionId: user.sessionId, qs: { init: true, cacheBust: cacheBust+'1' }, user: user };
+	var options2 = { sessionId: user.sessionId, qs: { next: true, cacheBust: cacheBust+'2' }, user: user };
+	var options3 = { sessionId: user.sessionId, qs: { next: true, cacheBust: cacheBust+'3' }, user: user };
 
 	async.mapSeries([options1,options2,options3], loadSingleSchedule, function(err, results) {
 		if(err) {

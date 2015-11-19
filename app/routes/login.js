@@ -46,6 +46,7 @@ module.exports = function (req, res, next) {
                     password: password,
                     sessionId: result.sessionId,
                     name: result.name,
+                    timeZoneDisplayName: result.timeZoneDisplayName,
                     lastLogin: Date.now()
                 }, function(err, newUser) {
                     if (err) {

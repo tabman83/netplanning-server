@@ -18,7 +18,8 @@ var UserSchema   = new Schema({
 	lastLogin:	{ type: Date, default: 0 },
 	lastCheck:	{ type: Date, default: 0 },
 	sessionId:	{ type: String },
-	language:	{ type: String, default: 'EN' }
+	language:	{ type: String, default: 'EN' },
+	timeZoneDisplayName: { type: String, default: 'UTC' }
 });
 
 UserSchema.index({username: 1, password: 1});

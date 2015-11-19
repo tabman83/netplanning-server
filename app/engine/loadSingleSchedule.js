@@ -10,6 +10,7 @@
 var util 			= require('util');
 var cheerio 		= require('cheerio');
 var request 		= require('request');
+var moment 			= require('moment-timezone');
 var Config 			= require('./config');
 var logger          = require("../logger");
 var AppError 		= require('../appError');
@@ -64,8 +65,8 @@ module.exports = function( options, callback ) {
 					}
 					*/
   					scheduleItems.push({
-  						begin: new Date(parseInt(begin, 10)),
-  						end: new Date(parseInt(end, 10)),
+  						begin: moment.tz(parseInt(begin, 10), options.user.timeZoneDisplayName).toDate(),
+  						end: moment.tz(parseInt(end, 10), options.user.timeZoneDisplayName).toDate(),
   						reason: reason,
   						kind: className,
   						userId: userId,
@@ -81,7 +82,7 @@ module.exports = function( options, callback ) {
   	}
 
 	var scheduleUri = util.format( Config.uris.scheduleUri, options.sessionId );
-	var options = {
+	var urlOptions = {
 		uri: scheduleUri,
 		gzip: true,
 		encoding: 'binary',
@@ -91,5 +92,5 @@ module.exports = function( options, callback ) {
 		method: 'GET'
 	}
 
-	request(options, loadSingleScheduleCallback);
+	request(urlOptions, loadSingleScheduleCallback);
 }
