@@ -11,6 +11,10 @@ var logger  = require("../logger");
 var Token   = require('../models/token');
 
 module.exports = function (req, res, next) {
+
+    logger.log(req.body);
+    res.status(200);
+    return;
     if( req.body.token === undefined ) {
         res.json(401, { message: 'Missing token parameter.' });
         return;
