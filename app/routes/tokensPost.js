@@ -17,19 +17,26 @@ module.exports = function (req, res, next) {
         return;
     }
 
-    Token.create({
+    Token.findOneAndUpdate({
+        // conditions
+        _user: req.user._id
+    }, {
+        // update
         _user: req.user._id,
         token: req.body.token,
         device: req.body.device,
         uuid: req.body.uuid,
         model: req.body.model,
         version: req.body.version
+    }, {
+        // options
+        upsert: true
     }, function(err, token) {
         if (err) {
             next(err);
             return;
         }
-        res.status(201).json({ message: 'Token successfully added.' });
+        res.status(201).json({ message: 'Token successfully updated.' });
         return;
     });
 }
