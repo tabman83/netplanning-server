@@ -2,7 +2,7 @@
  * NetPlanning
  * Antonino Parisi <tabman83@gmail.com>
  *
- * File name:    scheduleItem.js
+ * File name:   scheduleItem.js
  * Created:		May 2014
  * Description:	Mongoose schema of a schedule item
  */

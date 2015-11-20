@@ -3,7 +3,7 @@
  * Antonino Parisi <tabman83@gmail.com>
  *
  * File name:   tokensPost.js
- * Created:		9/1/2014 19.26
+ * Created:		September 1, 2014 19.26
  * Description:	POST /Tokens API
  */
 
@@ -12,29 +12,24 @@ var Token   = require('../models/token');
 
 module.exports = function (req, res, next) {
 
-    logger.log(req.body);
-    res.status(200);
-    return;
-    if( req.body.token === undefined ) {
-        res.json(401, { message: 'Missing token parameter.' });
-        return;
-    }
-
-    if( req.body.deviceType === undefined ) {
-        res.json(401, { message: 'Missing deviceType parameter.' });
+    if( req.body.device === undefined ) {
+        res.status(401).json({ message: 'Missing device parameter.' });
         return;
     }
 
     Token.create({
-        _user: req.user.userId,
-        deviceType: req.body.deviceType,
-        value: req.body.token
+        _user: req.user._id,
+        token: req.body.token,
+        device: req.body.device,
+        uuid: req.body.uuid,
+        model: req.body.model,
+        version: req.body.version
     }, function(err, token) {
         if (err) {
             next(err);
             return;
         }
-        res.json(201, { message: 'Token successfully added.' });
+        res.status(201).json({ message: 'Token successfully added.' });
         return;
     });
 }
