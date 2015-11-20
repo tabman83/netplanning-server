@@ -19,7 +19,8 @@ module.exports = function (req, res, next) {
 
     Token.findOneAndUpdate({
         // conditions
-        _user: req.user._id
+        _user: req.user._id,
+        uuid: req.body.uuid
     }, {
         // update
         _user: req.user._id,
