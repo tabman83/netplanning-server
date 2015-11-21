@@ -80,7 +80,7 @@ module.exports = function (req, res, next) {
         }
 
         //user has authenticated correctly thus we create a JWT token
-        var authToken = jwt.sign({ userId: user._id }, process.env.npm_package_config_secret);
+        var authToken = jwt.sign({ userId: user._id }, config.secret);
         res.status(200).json({
             authToken : authToken,
             name: user.name
