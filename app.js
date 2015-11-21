@@ -7,6 +7,7 @@ var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
 var AppError		= require('./app/appError');
+var Push			= require('./app/push');
 var app				= express();
 var apnConnection  = null;
 
@@ -21,13 +22,18 @@ var init = function(callback) {
 	};
 	apnConnection = new apn.Connection(options);
 
-	mongoose.connection.on("open", function(ref) {
-		logger.info("Database connection successfully established.");
+	mongoose.connection.on('open', function(ref) {
+		logger.info('Database connection successfully established.');
 		callback();
 	});
-	mongoose.connection.on("error", function(err) {
-		logger.error("Database connection failed.", err);
+	mongoose.connection.on('error', function(err) {
+		logger.error('Database connection failed (%s).', err.message);
+		dispose(function () {
+			logger.info('Process terminated.');
+	    	process.exit(0);
+		});
 	});
+	logger.info('Attempting database connection...');
 	mongoose.connect(process.env.npm_package_config_dbUrl);
 }
 
@@ -96,8 +102,9 @@ var appStart = function() {
 	};
 
 	//User.findOne(credentials).populate('schedule').exec( function(err, user) {
-	User.find().exec( function(err, users) {
+	User.find().exec(function(err, users) {
 		if(err) {
+			logger.error('Cannot enumerate users.');
 			return;
 		}
 		if( users.length === 0) {
@@ -108,8 +115,10 @@ var appStart = function() {
 		processingQueue.push(users, function(err) {
 			if(err) {
 				logger.error(err);
+				return;
 			}
 		});
+		//Push.sendNotification(users[0], 'line 1', 'line 2');
 	});
 
 }
@@ -121,4 +130,4 @@ process.on('SIGINT', function() {
 	});
 });
 
-init( appStart );
+init(appStart);
