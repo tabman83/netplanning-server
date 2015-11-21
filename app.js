@@ -43,7 +43,7 @@ var dispose = function(callback) {
 
 var appStart = function() {
 
-	app.use(require('morgan')('tiny', { stream: logger.stream }));
+	app.use(require('morgan')('common', { stream: logger.stream }));
 	app.use(require('body-parser')());
 	app.use(require('method-override')());
 	app.use(function(req, res, next) {
