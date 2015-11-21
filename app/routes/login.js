@@ -13,6 +13,8 @@ var logger  = require("../logger");
 var User    = require('../models/user');
 var Engine 	= require('../engine');
 var AppError = require('../appError');
+var config  = require('../../config.json');
+
 
 module.exports = function (req, res, next) {
 
@@ -62,7 +64,7 @@ module.exports = function (req, res, next) {
                             return;
                         }
                         //user has been registered thus we create a JWT token
-                        var authToken = jwt.sign({ userId: newUser._id }, process.env.npm_package_config_secret);
+                        var authToken = jwt.sign({ userId: newUser._id }, config.secret);
                         res.status(200).json({
                             authToken : authToken,
                             name: newUser.name
