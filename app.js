@@ -9,7 +9,7 @@ var User 			= require('./app/models/user');
 var AppError		= require('./app/appError');
 var Push			= require('./app/push');
 var app				= express();
-var apnConnection  = null;
+var config 			= require('./config.json');
 
 logger.info("%s %s starting up.", process.env.npm_package_name, process.env.npm_package_version);
 
@@ -20,7 +20,6 @@ var init = function(callback) {
 		key: 'certs/prod/key.pem',
 		production: true
 	};
-	apnConnection = new apn.Connection(options);
 
 	mongoose.connection.on('open', function(ref) {
 		logger.info('Database connection successfully established.');
@@ -34,11 +33,11 @@ var init = function(callback) {
 		});
 	});
 	logger.info('Attempting database connection...');
-	mongoose.connect(process.env.npm_package_config_dbUrl);
+	mongoose.connect(config.db_url);
 }
 
 var dispose = function(callback) {
-	apnConnection.shutdown();
+	//apnConnection.shutdown();
 	mongoose.connection.close(callback);
 }
 
@@ -52,7 +51,7 @@ var appStart = function() {
 		res.header('Access-Control-Allow-Headers', 'Signature, Authorization, Origin, X-Requested-With, Content-Type, Accept');
 		next();
 	});
-	app.use(require('./app/utils/signature')({ secret: process.env.npm_package_config_secret, skip: '/v1/login' }));
+	app.use(require('./app/utils/signature')({ secret: config.secret, skip: '/v1/login' }));
 
 	app.use(function(req, res, next) {
 		if (req.method === 'OPTIONS' || req.decoded === undefined) {
@@ -86,7 +85,7 @@ var appStart = function() {
 		}
 	});
 
-	var server = app.listen(process.env.npm_package_config_port, function() {
+	var server = app.listen(config.port, function() {
 		logger.info('Listening on %s:%d.', server.address().address, server.address().port);
 	});
 
