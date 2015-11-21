@@ -95,7 +95,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
         text += (!newCount && cancelledCount>1) ? 's' : '';
     }
     if(newCount || cancelledCount) {
-        Push.sendNotification(users, 'NetPlanning', text);
+        Push.sendNotification(user, 'NetPlanning', text);
     }
 
     user.lastCheck = Date.now();
