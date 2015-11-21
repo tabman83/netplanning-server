@@ -7,7 +7,6 @@ var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
 var AppError		= require('./app/appError');
-var Push			= require('./app/push');
 var app				= express();
 var config 			= require('./config.json');
 
@@ -92,7 +91,8 @@ var appStart = function() {
 	var processingQueue = async.queue(function (user, cb) {
 	    logger.info('Scanning user %s (%s).', user.name, user.username);
 		Engine.loadAndUpdateSchedule({
-			user: user
+			user: user,
+			notify: true
 		}, cb);
 	}, 2);
 
@@ -117,7 +117,6 @@ var appStart = function() {
 				return;
 			}
 		});
-		//Push.sendNotification(users[0], 'line 1', 'line 2');
 	});
 
 }

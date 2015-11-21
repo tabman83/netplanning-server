@@ -39,7 +39,8 @@ module.exports = function (req, res, next) {
     var force = (req.query.force.toLowerCase() === 'true');
     if(force) {
         Engine.loadAndUpdateSchedule({
-            user: req.user
+            user: req.user,
+            notify: false
         }, function(err) {
             if (err) {
                 next(err);

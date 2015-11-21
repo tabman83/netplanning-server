@@ -15,7 +15,7 @@ var Config 			= require('./config');
 var logger          = require("../logger");
 var AppError 		= require('../appError');
 
-module.exports = function( options, callback ) {
+module.exports = function(options, callback) {
 
 	var loadSingleScheduleCallback = function (error, response, body) {
 		if (!error && response.statusCode == 200) {

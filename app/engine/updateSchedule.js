@@ -12,6 +12,7 @@ var logger          = require("../logger");
 var ScheduleItem    = require('../models/scheduleItem');
 var ChangeItem      = require('../models/changeItem');
 var AppError        = require('../appError');
+var Push			= require('../push');
 
 module.exports = function(data, remoteItems, dbItems, next) {
 
@@ -27,6 +28,10 @@ module.exports = function(data, remoteItems, dbItems, next) {
             $lt: today
         }
     }).exec();*/
+
+    var newCount = 0;
+    var cancelledCount = 0;
+    //Push.sendNotification(users[0], 'line 1', 'line 2');
 
     remoteItems.forEach(function(remoteItem) {
         // look for this remote item in the db, if it is not found then it is a new lesson
@@ -49,11 +54,13 @@ module.exports = function(data, remoteItems, dbItems, next) {
                     isCancelled = false;
                     kind = remoteItem.kind;
                     name = remoteItem.name;
+                    newCount++;
                 } else if(!isOldAnUnavailability && isNewAnUnavailability) {
                     isNew = false;
                     isCancelled = true;
                     kind = dbItem.kind;
                     name = dbItem.name;
+                    cancelledCount++;
                 }
 
                 ChangeItem.create({
@@ -75,6 +82,21 @@ module.exports = function(data, remoteItems, dbItems, next) {
             return false;
         }
     });
+
+    var text = '';
+    if(newCount) {
+        text += newCount + ' new lesson';
+        text += newCount > 1 ? 's' : '';
+        text += cancelledCount ? ' and ' : '';
+    }
+    if(cancelledCount) {
+        text += newCount + ' cancelled';
+        text += newCount ? ' lesson' : '';
+        text += (!newCount && cancelledCount>1) ? 's' : '';
+    }
+    if(newCount || cancelledCount) {
+        Push.sendNotification(users, 'NetPlanning', text);
+    }
 
     user.lastCheck = Date.now();
     user.save(function(err) {
