@@ -11,20 +11,18 @@ var logger  = require("../logger");
 var Token   = require('../models/token');
 
 module.exports = function (req, res, next) {
-    if( req.body.token === undefined ) {
-        res.json(401, { message: 'Missing token parameter.' });
-        return;
+    if( req.params.id === undefined ) {
+        return res.status(401).json({ message: 'Missing uuid parameter.' });
     }
 
     Token.remove({
-        user: req.user.userId,
-        value: req.body.token
+        _user: req.user._id,
+        uuid: req.params.id
     }, function(err) {
         if (err) {
             next(err);
             return;
         }
-        res.json(200, { message: 'Token successfully removed.' });
-        return;
+        return res.status(200).json({ message: 'Token successfully removed.' });
     });
 }

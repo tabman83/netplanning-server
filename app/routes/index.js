@@ -10,11 +10,9 @@
 var Routes = function(router) {
 
     router.post('/Login', require('./login') );
-
     router.get('/Tokens', require('./tokensGet') );
     router.post('/Tokens', require('./tokensPost') );
-    router.delete('/Tokens', require('./tokensDelete') );
-
+    router.delete('/Tokens/:id', require('./tokensDelete') );
     router.get('/Items', require('./itemsGet') );
     router.delete('/Items/:id', require('./itemsDelete') );
     router.get('/Changes', require('./changesGet') );
