@@ -11,11 +11,14 @@ var logger          = require("../logger");
 var async           = require('async');
 var moment          = require('moment');
 var User            = require('../models/user');
+var logger	    = require('../logger');
 var ScheduleItem    = require('../models/scheduleItem');
 var Engine 			= require('../engine');
 
 module.exports = function (req, res, next) {
 
+	var id = req.params.id;
+	logger.debug('Attempted remove of id %s', id);
     return res.status(400).json({ message: 'Feature not enabled yet.'});
 
 };
