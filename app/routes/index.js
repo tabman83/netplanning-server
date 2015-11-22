@@ -16,7 +16,7 @@ var Routes = function(router) {
     router.delete('/Tokens', require('./tokensDelete') );
 
     router.get('/Items', require('./itemsGet') );
-    router.get('/Items', require('./itemsDelete') );
+    router.delete('/Items', require('./itemsDelete') );
     router.get('/Changes', require('./changesGet') );
 }
 
