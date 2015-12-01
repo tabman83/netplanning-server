@@ -90,7 +90,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
         text += cancelledCount ? ' and ' : '';
     }
     if(cancelledCount) {
-        text += newCount + ' cancelled';
+        text += cancelledCount + ' cancelled';
         text += !newCount ? ' lesson' : '';
         text += (!newCount && cancelledCount>1) ? 's' : '';
     }
