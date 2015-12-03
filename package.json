@@ -23,6 +23,7 @@
     "mongoose": "^4.2.5",
     "morgan": "latest",
     "node-gcm": "^0.12.1",
+    "pmx": "^0.5.5",
     "request": "2.x",
     "winston": "latest",
     "wns": "^0.5.3"

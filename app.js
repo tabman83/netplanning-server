@@ -1,3 +1,12 @@
+var pmx = require('pmx').init({
+	http          : true, // HTTP routes logging (default: true)
+	errors        : true, // Exceptions loggin (default: true)
+	custom_probes : true, // Auto expose JS Loop Latency and HTTP req/s as custom metrics
+	network       : true, // Network monitoring at the application level
+	ports         : true  // Shows which ports your app is listening on (default: false)
+	alert_enabled : true  // Enable alert sub field in custom metrics   (default: false)
+});
+
 var mongoose   		= require('mongoose');
 var express			= require('express');
 var apn 			= require('apn');
@@ -42,7 +51,12 @@ var dispose = function(callback) {
 
 var appStart = function() {
 
-	app.use(require('morgan')('common', { stream: logger.stream }));
+	//app.use(require('morgan')('common', { stream: logger.stream }));
+	app.use(function(req, res, next) {
+		logger.info('%s\t%s', req.method, req.user);
+		next();
+	});
+
 	app.use(require('body-parser')());
 	app.use(require('method-override')());
 	app.use(function(req, res, next) {
