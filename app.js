@@ -61,6 +61,11 @@ var appStart = function() {
     app.locals.pmxUsersCounter = pmxProbe.counter({
         name : 'Users'
     });
+    User.count(function(err, count) {
+        if(!err) {
+            app.locals.pmxUsersCounter.reset(count);
+        }
+    });
 
 	app.use(function(req, res, next) {
 		logger.info('%s\t%s', req.method, req.user);
