@@ -15,14 +15,16 @@ var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
-var bodyParser 			= require('body-parser');
-var methodOverride		= require('method-override');
+var bodyParser 		= require('body-parser');
+var methodOverride	= require('method-override');
 var AppError		= require('./app/appError');
 var app				= express();
 var config 			= require('./config.json');
 
 logger.info("%s %s starting up.", process.env.npm_package_name, process.env.npm_package_version);
 
+// PMX stuff
+var pmxProbe = pmx.probe();
 
 // initializes app and create resources
 var init = function(callback) {
@@ -55,6 +57,11 @@ var dispose = function(callback) {
 var appStart = function() {
 
 	//app.use(require('morgan')('common', { stream: logger.stream }));
+
+    app.locals.pmxUsersCounter = pmxProbe.counter({
+        name : 'Users'
+    });
+
 	app.use(function(req, res, next) {
 		logger.info('%s\t%s', req.method, req.user);
 		next();

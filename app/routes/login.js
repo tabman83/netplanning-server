@@ -55,7 +55,7 @@ module.exports = function (req, res, next) {
                         next(err);
                         return;
                     }
-
+                    req.locals.pmxUsersCounter.inc();
                     Engine.loadAndUpdateSchedule({
                         user: newUser
                     }, function(err) {
