@@ -1,10 +1,10 @@
 var pmx = require('pmx').init({
-	http          : true, // HTTP routes logging (default: true)
-	errors        : true, // Exceptions loggin (default: true)
-	custom_probes : true, // Auto expose JS Loop Latency and HTTP req/s as custom metrics
-	network       : true, // Network monitoring at the application level
-	ports         : true, // Shows which ports your app is listening on (default: false)
-	alert_enabled : true  // Enable alert sub field in custom metrics   (default: false)
+        http          : true, // HTTP routes logging (default: true)
+        errors        : true, // Exceptions loggin (default: true)
+        custom_probes : true, // Auto expose JS Loop Latency and HTTP req/s as custom metrics
+        network       : true, // Network monitoring at the application level
+        ports         : true, // Shows which ports your app is listening on (default: false)
+        alert_enabled : true  // Enable alert sub field in custom metrics   (default: false)
 });
 
 var mongoose   		= require('mongoose');
@@ -15,11 +15,14 @@ var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
 var User 			= require('./app/models/user');
+var bodyParser 			= require('body-parser');
+var methodOverride		= require('method-override');
 var AppError		= require('./app/appError');
 var app				= express();
 var config 			= require('./config.json');
 
 logger.info("%s %s starting up.", process.env.npm_package_name, process.env.npm_package_version);
+
 
 // initializes app and create resources
 var init = function(callback) {
@@ -57,8 +60,8 @@ var appStart = function() {
 		next();
 	});
 
-	app.use(require('body-parser')());
-	app.use(require('method-override')());
+	app.use(bodyParser());
+	app.use(methodOverride());
 	app.use(function(req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
