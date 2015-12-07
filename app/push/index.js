@@ -37,7 +37,7 @@ module.exports = {
 						wns.send(token.token, text1, text2);
 						break;
 					default:
-						logger.info('%s\t%s\tNo push service found for device %s.', user.username, user.name, token.device);
+						logger.info('%s - %s - No push service found for device %s.', user.username, user.name, token.device);
 						break;
 				}
 			});

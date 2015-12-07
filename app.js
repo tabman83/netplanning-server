@@ -21,7 +21,8 @@ var AppError		= require('./app/appError');
 var app				= express();
 var config 			= require('./config.json');
 
-logger.info("%s %s starting up.", process.env.npm_package_name, process.env.npm_package_version);
+var pjson = require('./package.json');
+logger.info('%s %s starting up.', pjson.name, pjson.version);
 
 // PMX stuff
 var pmxProbe = pmx.probe();
@@ -98,7 +99,7 @@ var appStart = function() {
 	});
 
     app.use(function(req, res, next) {
-		logger.info('%s\t%s\t%s\t%s', req.username, req.name, req.method, req.originalUrl);
+		logger.info('%s - %s - %s - %s - %s', req.user.username, req.user.name, req.method, req.originalUrl, req.ip);
 		next();
 	});
 
@@ -109,7 +110,7 @@ var appStart = function() {
 
 	app.use(function(err, req, res, next) {
 	  	if(err) {
-	  		logger.error(err.message, err.status);
+	  		logger.error(err.message, err.status, req.ip);
 			return res.status(err.status || 500).json({ message: err.message });
 		}
 	});
@@ -119,7 +120,7 @@ var appStart = function() {
 	});
 
 	var processingQueue = async.queue(function (user, cb) {
-	    logger.info('%s\t%s\tLoading remote planning.', user.username, user.name);
+	    logger.info('%s - %s - Loading remote planning.', user.username, user.name);
 		Engine.loadAndUpdateSchedule({
 			user: user,
 			notify: true

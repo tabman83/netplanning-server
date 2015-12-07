@@ -31,7 +31,7 @@ module.exports = function(data, next) {
 				return el;
 			});
 
-			logger.info('%s\t%s\t%d remote items have been found.', user.username, user.name, remoteItems.length);
+			logger.info('%s - %s - %d remote items have been found.', user.username, user.name, remoteItems.length);
 
 			next(null, data, remoteItems);
 		}

@@ -18,7 +18,7 @@ var Engine 			= require('../engine');
 module.exports = function (req, res, next) {
 
 	var id = req.params.id;
-	logger.info('%s\t%s\tAttempted remove of id %s', req.user, req.username, id);
+	logger.info('%s - %s - Attempted remove of id %s', req.user, req.username, id);
     return res.status(400).json({ message: 'Feature not enabled yet.'});
 
 };
