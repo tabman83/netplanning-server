@@ -33,7 +33,7 @@ module.exports = function(options) {
         	var signature = crypto.createHmac('md5', options.secret).update(data).digest('hex');
 
         	if( req.headers.signature !== signature ) {
-                logger.debug('Expected signature was: %s', signature);
+                logger.info('Expected signature was: %s', signature);
         		return next(new AppError(401, 'The signature verification for this message has failed.'));
         	}
     	} else {

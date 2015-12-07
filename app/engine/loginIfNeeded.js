@@ -20,7 +20,7 @@ module.exports = function(data, next) {
 	var diff = moment().diff(user.lastLogin, 'minutes', true);
 	var needsToLogin = diff > 25;
 	if( !needsToLogin ) {
-		logger.debug('User %s (%s) has a valid session.', user.name, user.username);
+		logger.info('%s\t%s\tA valid session has been found.', user.username, user.name);
 		next(null, data);
 	} else {
 		performLogin({

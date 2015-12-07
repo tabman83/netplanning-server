@@ -21,7 +21,6 @@ module.exports = {
 		wns.sendToastText03(token, text1, text2, options, function (err, result) {
     		if(err) {
 				logger.error('Error sending push through WNS (%s)', err.message);
-				logger.debug(err.newAccessToken);
 				return;
 			}
 			logger.info('Notification delivered to the WNS (%s)', result.headers['x-wns-status']);

@@ -67,11 +67,6 @@ var appStart = function() {
         }
     });
 
-	app.use(function(req, res, next) {
-		logger.info('%s\t%s', req.method, req.user);
-		next();
-	});
-
 	app.use(bodyParser());
 	app.use(methodOverride());
 	app.use(function(req, res, next) {
@@ -102,6 +97,11 @@ var appStart = function() {
 		});
 	});
 
+    app.use(function(req, res, next) {
+		logger.info('%s\t%s\t%s\t%s', req.username, req.name, req.method, req.originalUrl);
+		next();
+	});
+
 	var router = express.Router();
 	Routes(router);
 
@@ -119,7 +119,7 @@ var appStart = function() {
 	});
 
 	var processingQueue = async.queue(function (user, cb) {
-	    logger.info('Scanning user %s (%s).', user.name, user.username);
+	    logger.info('%s\t%s\tLoading remote planning.', user.username, user.name);
 		Engine.loadAndUpdateSchedule({
 			user: user,
 			notify: true

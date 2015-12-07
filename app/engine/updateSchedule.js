@@ -43,7 +43,7 @@ module.exports = function(data, remoteItems, dbItems, next) {
         } else if(dbItemsFound.length === 1) {
             var dbItem = dbItemsFound.pop();
             if( dbItem.kind !== remoteItem.kind) {
-                logger.debug('Detected change from %s to %s.', dbItem.kind, remoteItem.kind);
+                logger.info('%s\t%s\tDetected change from %s to %s.', user.username, user.name, dbItem.kind, remoteItem.kind);
 
                 var isNew = isCancelled = false;
                 var kind = name = null;

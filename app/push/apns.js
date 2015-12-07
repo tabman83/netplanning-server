@@ -11,6 +11,6 @@ var logger = require("../logger");
 
 module.exports = {
 	send: function(token, text1, text2) {
-		logger.debug('Sending through APNS: %s %s', text1, text2);
+		logger.info('Sending through APNS: %s %s', text1, text2);
 	}
 }
