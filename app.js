@@ -99,7 +99,8 @@ var appStart = function() {
 	});
 
     app.use(function(req, res, next) {
-		logger.info('%s - %s - %s - %s - %s', req.user.username, req.user.name, req.method, req.originalUrl, req.ip);
+        var ipAddress = req.headers['x-forwarded-for'] || req.ip;
+		logger.info('%s - %s - %s %s - %s', req.user.username, req.user.name, req.method, req.originalUrl, ipAddress);
 		next();
 	});
 
