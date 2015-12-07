@@ -100,7 +100,11 @@ var appStart = function() {
 
     app.use(function(req, res, next) {
         var ipAddress = req.headers['x-forwarded-for'] || req.ip;
-		logger.info('%s - %s - %s %s - %s', req.user.username, req.user.name, req.method, req.originalUrl, ipAddress);
+        if(req.user) {
+            logger.info('%s - %s - %s %s - %s', req.user.username, req.user.name, req.method, req.originalUrl, ipAddress);
+        } else {
+            logger.info('%s %s - %s', req.method, req.originalUrl, ipAddress);
+        }
 		next();
 	});
 
@@ -111,7 +115,8 @@ var appStart = function() {
 
 	app.use(function(err, req, res, next) {
 	  	if(err) {
-	  		logger.error(err.message, err.status, req.ip);
+            var ipAddress = req.headers['x-forwarded-for'] || req.ip;
+	  		logger.error('%s - %d - %s', err.message, err.status, req.ip);
 			return res.status(err.status || 500).json({ message: err.message });
 		}
 	});
