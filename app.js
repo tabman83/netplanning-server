@@ -115,7 +115,7 @@ var appStart = function() {
 
 	app.use(function(err, req, res, next) {
         var ipAddress = req.headers['X-Forwarded-For'] || req.ip;
-        logger.error('%s - %d - %s', err.message, err.status, req.ip);
+        logger.error('%s - %d - %s', err.message, err.status, ipAddress);
         return res.status(err.status || 500).json({ message: err.message });
 	});
 
