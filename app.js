@@ -99,7 +99,7 @@ var appStart = function() {
 	});
 
     app.use(function(req, res, next) {
-        var ipAddress = req.headers['X-Real-IP'] || req.headers['X-Forwarded-For'] || req.ip;
+        var ipAddress = req.headers['X-Forwarded-For'] || req.ip;
         if(req.user) {
             logger.info('%s - %s - %s %s - %s', req.user.username, req.user.name, req.method, req.originalUrl, ipAddress);
         } else {
@@ -114,7 +114,7 @@ var appStart = function() {
 	app.use('/v1', router);
 
 	app.use(function(err, req, res, next) {
-        var ipAddress = req.headers['X-Real-IP'] || req.headers['X-Forwarded-For'] || req.ip;
+        var ipAddress = req.headers['X-Forwarded-For'] || req.ip;
         logger.error('%s - %d - %s', err.message, err.status, req.ip);
         return res.status(err.status || 500).json({ message: err.message });
 	});
