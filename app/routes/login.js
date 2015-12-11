@@ -58,16 +58,8 @@ module.exports = function (req, res, next) {
                     req.app.locals.pmxUsersCounter.inc();
 
                     var agenda = req.app.locals.agenda;
-                    logger.info('%s - %s - Creating a new job and scheduling for immediate execution.', newUser.username, newUser.name);
-                    agenda.now('netplanning', { userId: newUser._id });
-                    //user has been registered thus we create a JWT token
-                    var authToken = jwt.sign({ userId: newUser._id }, config.secret);
-                    res.status(200).json({
-                        authToken : authToken,
-                        name: newUser.name
-                    });
-
-                    /*
+                    logger.info('%s - %s - Creating a new job and scheduling to run in 30 minutes.', newUser.username, newUser.name);
+                    agenda.schedule('in 30 minutes', 'netplanning', { userId: newUser._id });
                     Engine.loadAndUpdateSchedule({
                         user: newUser
                     }, function(err) {
@@ -81,7 +73,7 @@ module.exports = function (req, res, next) {
                             authToken : authToken,
                             name: newUser.name
                         });
-                    });*/
+                    });
                 });
             });
             return;
