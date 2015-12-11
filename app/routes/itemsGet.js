@@ -38,6 +38,17 @@ module.exports = function (req, res, next) {
 
     var force = (req.query.force.toLowerCase() === 'true');
     if(force) {
+        // cancel job
+        var agenda = req.app.locals.agenda;
+        agenda.jobs({
+            name: 'netplanning',
+            'data.userId': req.user._id
+        }, function(err, jobs) {
+            var job = jobs[0];
+            job.schedule('in 30 minutes', { userId: req.user._id });
+            job.save();
+            logger.info('%s - %s - Website check rescheduled to run again in 30 minutes.', req.user.username, req.user.name);
+        });
         Engine.loadAndUpdateSchedule({
             user: req.user,
             notify: false
@@ -46,6 +57,7 @@ module.exports = function (req, res, next) {
                 next(err);
                 return;
             }
+            // reschedule job
             getItems();
         });
     } else {

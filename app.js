@@ -11,6 +11,7 @@ var mongoose   		= require('mongoose');
 var express			= require('express');
 var apn 			= require('apn');
 var async 			= require('async');
+var Agenda          = require('agenda');
 var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
@@ -58,7 +59,8 @@ var dispose = function(callback) {
 var appStart = function() {
 
 	//app.use(require('morgan')('common', { stream: logger.stream }));
-
+    var agenda = new Agenda({db: {address: config.db_url}});
+    app.locals.agenda = agenda;
     app.locals.pmxUsersCounter = pmxProbe.counter({
         name : 'Users'
     });
@@ -123,37 +125,54 @@ var appStart = function() {
 		logger.info('Listening on %s:%d.', server.address().address, server.address().port);
 	});
 
-	var processingQueue = async.queue(function (user, cb) {
-	    logger.info('%s - %s - Loading remote planning.', user.username, user.name);
-		Engine.loadAndUpdateSchedule({
-			user: user,
-			notify: true
-		}, cb);
-	}, 2);
+    agenda.define('netplanning', function(job, done) {
+        var userId = job.attrs.data.userId;
+        User.findById(userId, function(err, user) {
+            if(err) {
+                logger.info('Error processing user id %s', userId);
+                done();
+                return;
+            }
+            logger.info('%s - %s - Running netplanning website check for user.', user.username, user.name);
+            Engine.loadAndUpdateSchedule({
+                user: user,
+                notify: true
+            }, function(err) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                job.schedule('in 30 minutes', { userId: user._id });
+                job.save();
+                logger.info('%s - %s - Website check scheduled to run again in 30 minutes.', user.username, user.name);
+                done();
+            });
+        });
+    });
 
-	processingQueue.drain = function() {
-		logger.info('All users have been processed. Scheduling next execution in 30 minutes.');
-	};
-
-	//User.findOne(credentials).populate('schedule').exec( function(err, user) {
-	User.find().exec(function(err, users) {
-		if(err) {
-			logger.error('Cannot enumerate users.');
-			return;
-		}
-		if( users.length === 0) {
-			logger.info('No users to scan for updates.');
-			return;
-		}
-		logger.info('Scanning %d users for updates of planning.', users.length);
-		processingQueue.push(users, function(err) {
-			if(err) {
-				logger.error(err);
-				return;
-			}
-		});
-	});
-
+    agenda.on('ready', function() {
+        agenda.cancel({}, function(err, numRemoved) {
+            if(err) {
+                logger.error('Error while removing old jobs.', err);
+                return;
+            }
+            User.find().exec(function(err, users) {
+        		if(err) {
+        			logger.error('Cannot enumerate users.');
+        			return;
+        		}
+        		if( users.length === 0) {
+        			logger.info('No users.');
+        			return;
+        		}
+                users.forEach(function(user) {
+                    logger.info('%s - %s - Creating a new job and scheduling for immediate execution.', user.username, user.name);
+                    agenda.now('netplanning', { userId: user._id });
+                });
+        	});
+            agenda.start();
+        });
+    });
 }
 
 process.on('SIGINT', function() {
