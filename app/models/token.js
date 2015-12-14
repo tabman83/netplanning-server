@@ -19,6 +19,6 @@ var TokenSchema   = new Schema({
     token:      { type: String }
 });
 
-TokenSchema.index({ user: 1, uuid: 1 }, { unique: true });
+TokenSchema.index({ _user: 1, uuid: 1 }, { unique: true });
 
 module.exports = mongoose.model('Token', TokenSchema);
