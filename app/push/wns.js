@@ -12,7 +12,7 @@ var wns = require('wns');
 var config = require('../../config.json');
 
 module.exports = {
-	send: function(token, text1, text2) {
+	send: function(token, text1, text2, badge) {
 		var options = {
     		client_id: config.wns_client_id,
     		client_secret: config.wns_client_secret
@@ -20,10 +20,17 @@ module.exports = {
 
 		wns.sendToastText03(token, text1, text2, options, function (err, result) {
     		if(err) {
-				logger.error('Error sending push through WNS (%s)', err.message);
+				logger.error('Error sending push message through WNS (%s)', err.message);
 				return;
 			}
 			logger.info('Notification delivered to the WNS (%s)', result.headers['x-wns-status']);
+		});
+		wns.sendBadge(token, badge, [options, function (err, result) {
+    		if(err) {
+				logger.error('Error sending push badge through WNS (%s)', err.message);
+				return;
+			}
+			logger.info('Notification badge delivered to the WNS (%s)', result.headers['x-wns-status']);
 		});
 
 	}

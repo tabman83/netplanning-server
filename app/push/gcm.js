@@ -13,11 +13,12 @@ var config = require('../../config.json');
 var sender = new gcm.Sender(config.gcm_api_key);
 
 module.exports = {
-	send: function(token, text1, text2) {
+	send: function(token, text1, text2, badge) {
 		var message = new gcm.Message({
 			data: {
         		title: text1,
-        		message: text2
+        		message: text2,
+				badge: badge
     		}
 		});
 		sender.sendNoRetry(message, { registrationTokens: [token] }, function (err, result) {

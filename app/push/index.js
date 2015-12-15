@@ -15,7 +15,7 @@ var wns = require("./wns");
 
 module.exports = {
 
-	sendNotification: function(user, text1, text2) {
+	sendNotification: function(user, text1, text2, badge) {
 
 		//Engine.login = require('./login');
 		Token.find({
@@ -28,13 +28,13 @@ module.exports = {
 			tokens.forEach(function(token) {
 				switch(token.device) {
 					case 'Android':
-						gcm.send(token.token, text1, text2);
+						gcm.send(token.token, text1, text2, badge);
 						break;
 					case 'iOS':
-						apns.send(token.token, text1, text2);
+						apns.send(token.token, text1, text2, badge);
 						break;
 					case 'windows':
-						wns.send(token.token, text1, text2);
+						wns.send(token.token, text1, text2, badge);
 						break;
 					default:
 						logger.info('%s - %s - No push service found for device %s.', user.username, user.name, token.device);
