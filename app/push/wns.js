@@ -25,7 +25,7 @@ module.exports = {
 			}
 			logger.info('Notification delivered to the WNS (%s)', result.headers['x-wns-status']);
 		});
-		wns.sendBadge(token, badge, [options, function (err, result) {
+		wns.sendBadge(token, badge, options, function (err, result) {
     		if(err) {
 				logger.error('Error sending push badge through WNS (%s)', err.message);
 				return;
