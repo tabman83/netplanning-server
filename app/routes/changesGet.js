@@ -24,6 +24,9 @@ module.exports = function (req, res, next) {
             next(err);
             return;
         }
+        ChangeItem.remove({
+            _user: req.user._id
+        }).exec();
         res.status(200).json(items);
     });
 

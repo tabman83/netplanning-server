@@ -47,7 +47,8 @@ module.exports = function (req, res, next) {
             var job = jobs[0];
             job.schedule('in 30 minutes', { userId: req.user._id });
             job.save();
-            logger.info('%s - %s - Website check rescheduled to run again in 30 minutes.', req.user.username, req.user.name);
+            var scheduledWhen = moment().add(30, 'minutes').format('LT');
+            logger.info('%s - %s - Website check rescheduled to run again at %s.', req.user.username, req.user.name, scheduledWhen);
         });
         Engine.loadAndUpdateSchedule({
             user: req.user,
