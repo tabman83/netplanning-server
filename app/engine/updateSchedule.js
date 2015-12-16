@@ -43,13 +43,15 @@ module.exports = function(data, remoteItems, dbItems, next) {
         } else if(dbItemsFound.length === 1) {
             var dbItem = dbItemsFound.pop();
             if( dbItem.kind !== remoteItem.kind) {
-                logger.info('%s - %s - Detected change from %s to %s.', user.username, user.name, dbItem.kind, remoteItem.kind);
+                var when = moment(remoteItem.begin).format('llll');
+                logger.info('%s - %s - Detected change from %s to %s on %s.', user.username, user.name, dbItem.kind, remoteItem.kind, when);
 
                 var isNew = isCancelled = false;
                 var kind = name = null;
                 var isOldAnUnavailability = unavailabilities.indexOf(dbItem.kind) > -1;
                 var isNewAnUnavailability = unavailabilities.indexOf(remoteItem.kind) > -1;
-                if(isOldAnUnavailability && !isNewAnUnavailability) {
+                var isNewARecurrency = (remoteItem.kind === 'recurrente');
+                if(isOldAnUnavailability && !isNewAnUnavailability && !isNewARecurrency) {
                     isNew = true;
                     isCancelled = false;
                     kind = remoteItem.kind;

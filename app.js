@@ -12,6 +12,7 @@ var express			= require('express');
 var apn 			= require('apn');
 var async 			= require('async');
 var Agenda          = require('agenda');
+var moment          = require('moment');
 var logger 			= require("./app/logger");
 var Engine 			= require('./app/engine');
 var Routes			= require('./app/routes');
@@ -144,7 +145,8 @@ var appStart = function() {
                 }
                 job.schedule('in 30 minutes', { userId: user._id });
                 job.save();
-                logger.info('%s - %s - Website check scheduled to run again in 30 minutes.', user.username, user.name);
+                var scheduledWhen = moment().add(30, 'minutes').format('LT');
+                logger.info('%s - %s - Website check scheduled to run again at %s.', user.username, user.name, scheduledWhen);
                 done();
             });
         });

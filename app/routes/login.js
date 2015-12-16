@@ -9,12 +9,12 @@
 
 var jwt     = require('jsonwebtoken');
 var util    = require("util");
+var moment  = require('moment');
 var logger  = require("../logger");
 var User    = require('../models/user');
 var Engine 	= require('../engine');
 var AppError = require('../appError');
 var config  = require('../../config.json');
-
 
 module.exports = function (req, res, next) {
 
@@ -58,7 +58,8 @@ module.exports = function (req, res, next) {
                     req.app.locals.pmxUsersCounter.inc();
 
                     var agenda = req.app.locals.agenda;
-                    logger.info('%s - %s - Creating a new job and scheduling to run in 30 minutes.', newUser.username, newUser.name);
+                    var scheduledWhen = moment().add(30, 'minutes').format('LT');
+                    logger.info('%s - %s - Creating a new job and scheduling to run again at %s.', newUser.username, newUser.name, scheduledWhen);
                     agenda.schedule('in 30 minutes', 'netplanning', { userId: newUser._id });
                     Engine.loadAndUpdateSchedule({
                         user: newUser
